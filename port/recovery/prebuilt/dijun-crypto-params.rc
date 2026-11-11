@@ -1,0 +1,10 @@
+# 在 recovery 建立逻辑分区时并行准备真实参数；只有脚本成功才启动原厂解密服务。
+service dijun-crypto-params /system/bin/sh /system/bin/dijun-crypto-params
+    user root
+    group root
+    seclabel u:r:recovery:s0
+    disabled
+    oneshot
+
+on property:twrp.modules.loaded=true
+    start dijun-crypto-params

@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest version="8.0" type="device">
+  <hal format="aidl">
+    <name>android.hardware.vibrator</name>
+    <fqname>IVibrator/default</fqname>
+    <fqname>IVibrator/vibratorfeature</fqname>
+  </hal>
+  <hal format="aidl">
+    <name>android.hardware.boot</name>
+    <fqname>IBootControl/default</fqname>
+  </hal>
+  <hal format="aidl">
+    <name>android.hardware.gatekeeper</name>
+    <fqname>IGatekeeper/default</fqname>
+  </hal>
+  <hal format="aidl">
+    <name>android.hardware.security.keymint</name>
+    <version>3</version>
+    <fqname>IKeyMintDevice/default</fqname>
+    <fqname>IRemotelyProvisionedComponent/default</fqname>
+  </hal>
+  <hal format="aidl">
+    <name>android.hardware.security.secureclock</name>
+    <fqname>ISecureClock/default</fqname>
+  </hal>
+  <hal format="aidl">
+    <name>android.hardware.security.sharedsecret</name>
+    <fqname>ISharedSecret/default</fqname>
+  </hal>
+</manifest>

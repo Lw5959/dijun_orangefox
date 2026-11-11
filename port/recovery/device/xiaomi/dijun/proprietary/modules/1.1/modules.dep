@@ -1,0 +1,51 @@
+dse.ko:
+securelib.ko:
+xr_vote_mng.ko: securelib.ko
+xr_cpufreq.ko: xr_vote_mng.ko securelib.ko
+perf-actuator.ko:
+os_cpu_plat_common.ko:
+os_cpu_vip_sched.ko: perf-actuator.ko os_cpu_plat_common.ko
+xr_timestamp.ko: securelib.ko
+xr_doze.ko: xr_timestamp.ko securelib.ko
+xr_ffa-module.ko:
+xrsp_driver.ko: xr_ffa-module.ko
+xr-pmic-spmi.ko: xrsp_driver.ko xr_ffa-module.ko
+xr-clk.ko: xr_vote_mng.ko xr_doze.ko xr_timestamp.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+sched-walt.ko: xr_cpufreq.ko os_cpu_vip_sched.ko perf-actuator.ko os_cpu_plat_common.ko xr-clk.ko xr_vote_mng.ko xr_doze.ko xr_timestamp.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+xring_thermal.ko: dse.ko sched-walt.ko xr_cpufreq.ko os_cpu_vip_sched.ko perf-actuator.ko os_cpu_plat_common.ko xr-clk.ko xr_vote_mng.ko xr_doze.ko xr_timestamp.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+xr_ddr.ko: xring_thermal.ko dse.ko sched-walt.ko xr_cpufreq.ko os_cpu_vip_sched.ko perf-actuator.ko os_cpu_plat_common.ko xr-clk.ko xr_vote_mng.ko xr_doze.ko xr_timestamp.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+media-dvfs.ko: xr_ddr.ko xring_thermal.ko dse.ko sched-walt.ko xr_cpufreq.ko os_cpu_vip_sched.ko perf-actuator.ko os_cpu_plat_common.ko xr-clk.ko xr_vote_mng.ko xr_doze.ko xr_timestamp.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+mca_platform_buckchg_class.ko:
+mca_protocol_class.ko:
+mca_sysfs.ko:
+mca_event.ko: mca_sysfs.ko
+mca_log.ko: mca_event.ko mca_sysfs.ko
+mca_parse_dts.ko: mca_log.ko mca_event.ko mca_sysfs.ko
+mca_protocol_pd_class.ko: mca_protocol_class.ko mca_parse_dts.ko mca_log.ko mca_event.ko mca_sysfs.ko
+external_tcpc.ko: mca_log.ko mca_event.ko mca_sysfs.ko
+mca_workqueue.ko: mca_log.ko mca_event.ko mca_sysfs.ko
+fsa4480-i2c.ko: mca_platform_buckchg_class.ko mca_protocol_pd_class.ko mca_protocol_class.ko external_tcpc.ko mca_workqueue.ko mca_parse_dts.ko mca_log.ko mca_event.ko mca_sysfs.ko
+drm_display_helper.ko:
+xring_smmu.ko:
+miev.ko:
+xr_dfx.ko: xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko
+mitee.ko: xr_dfx.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko
+xr_mem_s1.ko: os_cpu_vip_sched.ko perf-actuator.ko os_cpu_plat_common.ko xring_smmu.ko miev.ko mitee.ko xr_dfx.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko
+redriver.ko:
+flowctrl.ko:
+xring_usb.ko: redriver.ko flowctrl.ko xr_doze.ko xr_timestamp.ko securelib.ko
+dmd.ko: xr_dfx.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+xr_pmic.ko: xr_vote_mng.ko dmd.ko xr_dfx.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+xring-drm.ko: media-dvfs.ko xr_ddr.ko xring_thermal.ko dse.ko sched-walt.ko xr_cpufreq.ko fsa4480-i2c.ko drm_display_helper.ko xr_mem_s1.ko os_cpu_vip_sched.ko perf-actuator.ko os_cpu_plat_common.ko xring_smmu.ko mca_platform_buckchg_class.ko mca_protocol_pd_class.ko mca_protocol_class.ko miev.ko external_tcpc.ko mca_workqueue.ko xring_usb.ko redriver.ko mca_parse_dts.ko mca_log.ko mca_event.ko mca_sysfs.ko mitee.ko xr_pmic.ko flowctrl.ko xr-clk.ko xr_vote_mng.ko xr_doze.ko dmd.ko xr_timestamp.ko xr_dfx.ko xr-pmic-spmi.ko xrsp_driver.ko xr_ffa-module.ko securelib.ko
+shub_boot_prepare.ko:
+xr_ipc.ko: securelib.ko
+shub_ipc_drv.ko: shub_boot_prepare.ko xr_ipc.ko
+xiaomi_touch_dijun.ko: shub_ipc_drv.ko shub_boot_prepare.ko
+xr_spi_mmio.ko:
+tui.ko:
+synaptics_tcm2.ko: xiaomi_touch_dijun.ko xr_spi_mmio.ko tui.ko shub_ipc_drv.ko shub_boot_prepare.ko
+xring_audio_hw_third.ko: fsa4480-i2c.ko external_tcpc.ko mca_protocol_pd_class.ko mca_workqueue.ko mca_protocol_class.ko mca_parse_dts.ko mca_log.ko mca_event.ko mca_sysfs.ko mca_platform_buckchg_class.ko
+shub_app_router.ko: shub_ipc_drv.ko shub_boot_prepare.ko
+xring-ocm.ko:
+hwid.ko:
+xr_isp.ko: shub_app_router.ko shub_ipc_drv.ko shub_boot_prepare.ko xring-ocm.ko xr_ipc.ko hwid.ko

@@ -1,0 +1,30 @@
+# recovery 平台库保持在 /system；厂商闭包保持在 /vendor 的独立 namespace。
+# 基础 recovery profile 与原厂 recovery 的扁平平台库布局一致。
+dir.vendor = /vendor/bin
+dir.vendor = /odm/bin
+dir.recovery = /system/bin
+
+[recovery]
+additional.namespaces = vendor
+namespace.default.isolated = false
+namespace.default.visible = true
+namespace.default.search.paths = /system/${LIB}
+namespace.vendor.isolated = true
+namespace.vendor.visible = true
+namespace.vendor.search.paths = /odm/${LIB}:/vendor/${LIB}:/vendor/${LIB}/hw
+namespace.vendor.permitted.paths = /vendor:/odm
+namespace.vendor.links = default
+namespace.vendor.link.default.shared_libs = libbinder_ndk.so:libc.so:libdl.so:liblog.so:libm.so:libvndksupport.so
+
+[vendor]
+additional.namespaces = system
+namespace.default.isolated = true
+namespace.default.visible = true
+namespace.default.search.paths = /odm/${LIB}:/vendor/${LIB}:/vendor/${LIB}/hw
+namespace.default.permitted.paths = /vendor:/odm
+namespace.default.links = system
+namespace.default.link.system.shared_libs = libbinder_ndk.so:libc.so:libdl.so:liblog.so:libm.so:libvndksupport.so
+namespace.system.isolated = true
+namespace.system.visible = true
+namespace.system.search.paths = /system/${LIB}
+namespace.system.permitted.paths = /system

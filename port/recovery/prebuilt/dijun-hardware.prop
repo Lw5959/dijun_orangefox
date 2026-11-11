@@ -1,0 +1,9 @@
+# 来自本机 ODM build.prop；sys_path 使用已探测到的实际 I2C 设备路径，避免旧驱动别名。
+ro.odm.mm.vibrator.sys_path=/sys/bus/i2c/devices/0-0043
+ro.odm.mm.vibrator.device_type=pcm
+ro.odm.mm.vibrator.resonant_frequency=130
+ro.odm.mm.vibrator.audio_haptic_support=true
+ro.odm.mm.vibrator.slide_effect_protect_time=20
+ro.odm.mm.vibrator.cirrus=true
+ro.odm.mm.vibrator.manufacturer=cirrus
+ro.odm.mm.vibrator.lowPowerMode=true

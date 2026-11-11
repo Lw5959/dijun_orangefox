@@ -1,0 +1,28 @@
+{
+  "recovery": {
+    "url": "https://gitlab.com/OrangeFox/bootable/Recovery",
+    "commit": "0f7831d3240f4c3925a0b5fd7d2c907ddf8704c2",
+    "files": {
+      "NOTICE": "bec25f3fd85684e89eece2cd3e9c8f88b20eb646afed0ce1ef2339860e8b1fe5",
+      "gui/include/gui/placement.h": "4c59ef53b2cfe0abae55da207ed5bdbc7515a97ad461f54271c53fb37d916997",
+      "libpixelflinger/include/pixelflinger/format.h": "e0cb16a955feed117f3a53b7127d98cac6e4dc3996ec05a651ad42933e315314",
+      "libpixelflinger/include/pixelflinger/pixelflinger.h": "6fa76e035430cb07d6c1ff7e50504c3ff248836d669d7864e128b0360a56c38a",
+      "libpixelflinger/include/private/pixelflinger/ggl_context.h": "b28a20a21b198270f980f7849bf85aaa59ef97b6f59197d8b45efa19ed5696ab",
+      "libpixelflinger/include/private/pixelflinger/ggl_fixed.h": "682eb58ea59266c2a1b09aa5d3ccb79775b8bcf09f16711868907704971e7855",
+      "minuitwrp/graphics.h": "90bc6e021316dad1f214283671e06bc275bb52eb753feeb4d5801e606ae5537b",
+      "minuitwrp/graphics_drm.cpp": "9d05737499d62c5b6ed0cf2b08aff8a49a776b339a2ab6b9639d02e0beeef5a7",
+      "minuitwrp/include/linux/msm_ion.h": "31d00c126b541929f9a724de4bf57a6b5c2c3a3f7fa1e6a0ee3a5c052ddb8632",
+      "minuitwrp/include/linux/msm_mdp.h": "6f9189fdb36257d7602188936009387a7d3b4c3bc0e03966ef620a8be2a8a643",
+      "minuitwrp/include/minuitwrp/minui.h": "d1f5126bccf63a6108fd817b99506bbb70e9338f3bad14797aaaac30e441e639",
+      "minuitwrp/include/minuitwrp/truetype.hpp": "a88c3addb51a52c7996a98790bb87b25c72a0fe5b1b298b69f7ca60b80c75f1b",
+      "minuitwrp/include/private/resources.h": "e27f6608c68e26bd5f09f72eca7929605e72b1b0e61346349d96b08126886e33"
+    }
+  },
+  "build-make": {
+    "url": "https://gitlab.com/OrangeFox/build/make",
+    "commit": "401f131a266b1d6cf0ca9b7e4a385c3b02547725",
+    "files": {
+      "tools/check_elf_file.py": "4426b8379ddeb65846797645060cd81fb7a47d5686edeac25220c1101434e83a"
+    }
+  }
+}

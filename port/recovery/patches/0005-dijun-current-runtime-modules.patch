@@ -1,0 +1,170 @@
+diff --git a/Android.mk b/Android.mk
+index 6191472..a1de0c4 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -548,11 +548,9 @@ TWRP_REQUIRED_MODULES += \
+     mke2fs.conf \
+     pigz \
+     teamwin \
+-    twrp \
+     fsck.fat \
+     fatlabel \
+     mkfs.fat \
+-    permissive.sh \
+     simg2img_twrp \
+     libbootloader_message \
+     init.recovery.hlthchrg.rc \
+@@ -576,9 +574,6 @@ TWRP_REQUIRED_MODULES += \
+     android.hardware.health@2.1-impl.recovery \
+     android.hardware.health@2.1-service.rc \
+     android.hardware.health@2.1.xml \
+-    android.hardware.health@2.0-service \
+-    android.hardware.health@2.0-impl.recovery \
+-    android.hardware.health@2.0-service.rc \
+     libadbd.recovery \
+     libadbd_services.recovery
+ 
+@@ -593,12 +588,7 @@ TWRP_REQUIRED_MODULES += \
+     nano.rc
+ endif
+ 
+-ifneq ($(TW_EXCLUDE_BASH), true)
+-    ifneq ($(wildcard external/bash/.),)
+-    TWRP_REQUIRED_MODULES += \
+-        bash_twrp
+-    endif
+-endif
++# Bash 由 orangefox.mk 的 FOX_BUILD_BASH 选择真实 bash/libncurses/bash_fox 模块。
+ 
+ ifeq ($(TW_INCLUDE_REPACKTOOLS), true)
+ TWRP_REQUIRED_MODULES += \
+@@ -628,8 +618,7 @@ ifneq ($(TW_INCLUDE_CRYPTO),)
+ TWRP_REQUIRED_MODULES += \
+     vold_prepare_subdirs \
+     task_profiles.json \
+-    fscryptpolicyget.recovery \
+-    keystore_auth \
++    fscryptpolicyget \
+     keystore2 \
+     android.system.keystore2-service.xml \
+     keystore2.rc \
+@@ -660,6 +649,7 @@ endif
+ ifeq ($(TW_INCLUDE_FB2PNG), true)
+     TWRP_REQUIRED_MODULES += fb2png
+ endif
++# CLI 模块名为 orscmd，安装文件名为 twrp；不再 required 不存在的 twrp 模块。
+ ifneq ($(TW_OEM_BUILD),true)
+     TWRP_REQUIRED_MODULES += orscmd
+     TWRP_REQUIRED_MODULES += foxcli
+@@ -674,7 +664,7 @@ ifneq ($(TW_EXCLUDE_DEFAULT_USB_INIT), true)
+     TWRP_REQUIRED_MODULES += init.recovery.usb.rc
+ endif
+ ifeq ($(TWRP_INCLUDE_LOGCAT), true)
+-    TWRP_REQUIRED_MODULES += logcat event-log-tags
++    TWRP_REQUIRED_MODULES += logcat
+     ifeq ($(TARGET_USES_LOGD), true)
+         TWRP_REQUIRED_MODULES += logd libsysutils libnl init.recovery.logd.rc
+     endif
+@@ -692,7 +682,6 @@ endif
+ ifeq ($(TARGET_USERIMAGES_USE_F2FS), true)
+     TWRP_REQUIRED_MODULES += sload_f2fs \
+         libfs_mgr \
+-        fs_mgr \
+         liblz4 \
+         libinit
+ endif
+diff --git a/orangefox.mk b/orangefox.mk
+index 5b024ee..bec84d0 100644
+--- a/orangefox.mk
++++ b/orangefox.mk
+@@ -451,8 +451,9 @@ ifeq ($(FOX_BUILD_BASH),1)
+         $(warning Please run: "git clone --depth=1 https://github.com/LineageOS/android_external_bash -b lineage-21.0 external/bash")
+         $(error Bash sources not present; exiting)
+   endif
+-  RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_OPTIONAL_EXECUTABLES)/bash
+-  RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libncurses.so
++  # 当前 bash/libncurses 均为 system_ext_specific，relink 必须读取其真实安装路径。
++  RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_SYSTEM_EXT_EXECUTABLES)/bash
++  RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/libncurses.so
+   TWRP_REQUIRED_MODULES += bash libncurses
+ 
+   TWRP_REQUIRED_MODULES += \
+diff --git a/prebuilt/Android.mk b/prebuilt/Android.mk
+index cbb090d..69d6ba9 100644
+--- a/prebuilt/Android.mk
++++ b/prebuilt/Android.mk
+@@ -87,15 +87,12 @@ RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libbinder_ndk.so
+ RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libchrome.so
+ RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libevent.so
+ RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libperfetto_c.so
+-RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/keystore
+-RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/keystore_auth
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/keystore_cli_v2
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_SYSTEM_EXT_EXECUTABLES)/hwservicemanager
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/servicemanager
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/vold_prepare_subdirs
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_VENDOR_EXECUTABLES)/vndservicemanager
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/toybox
+-RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/android.hardware.health@2.0-service
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/android.hardware.health@2.1-service
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_RECOVERY_ROOT_OUT)/system/bin/charger
+ RECOVERY_BINARY_SOURCE_FILES += $(TARGET_RECOVERY_ROOT_OUT)/system/bin/ueventd
+@@ -227,9 +224,7 @@ ifeq ($(TW_INCLUDE_CRYPTO), true)
+         RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.security.rkp-V3-ndk.so
+         RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.security.sharedsecret-V1-ndk.so
+         RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/avbctl
+-        RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/keystore
+         RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/keystore2
+-        RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/keystore_cli
+         RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/android.system.wifi.keystore@1.0.so
+         RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libstatslog.so
+         RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libsoft_attestation_cert.so
+@@ -437,7 +432,7 @@ ifneq ($(TW_EXCLUDE_NANO), true)
+     RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libssl.so
+ endif
+ 
+-ifneq ($(TW_EXCLUDE_BASH), true)
++ifeq ($(FOX_BUILD_BASH),1)
+     RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_SYSTEM_EXT_EXECUTABLES)/bash
+     RECOVERY_LIBRARY_SOURCE_FILES += $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/libncurses.so
+ endif
+@@ -506,11 +501,16 @@ LOCAL_POST_INSTALL_CMD += \
+         LOCAL_POST_INSTALL_CMD += \
+             && cp $(TARGET_OUT_ETC)/mke2fs.conf $(TARGET_RECOVERY_ROOT_OUT)/system/etc/mke2fs.conf
+     endif
++ifeq ($(TWRP_INCLUDE_LOGCAT), true)
++# event-log-tags 不是模块；依赖 Soong 合并产物后再复制，保留 logcat 标签表。
++LOCAL_ADDITIONAL_DEPENDENCIES += $(SOONG_OUT_DIR)/.intermediates/all-event-log-tags.txt
++LOCAL_POST_INSTALL_CMD += \
++    && cp -f $(SOONG_OUT_DIR)/.intermediates/all-event-log-tags.txt $(TARGET_RECOVERY_ROOT_OUT)/system/etc/event-log-tags
++endif
+ LOCAL_REQUIRED_MODULES += init_second_stage.recovery \
+     reboot.recovery \
+     plat_service_contexts \
+     plat_hwservice_contexts \
+-    plat_hardware_contexts \
+     vndservice_contexts \
+     plat_keystore2_key_contexts \
+     vendor_hwservice_contexts
+@@ -584,11 +584,18 @@ ifneq ($(TW_EXCLUDE_TZDATA), true)
+     LOCAL_MODULE_TAGS := optional
+     LOCAL_MODULE_CLASS := ETC
+     LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)/system/bin
+-    LOCAL_REQUIRED_MODULES := tzdata
++    # A16 的时区数据由不可安装的 apex_tzdata 提供，不能从旧 system/usr 路径复制。
++    # Soong 模块已先于本文件注册；显式文件依赖保证数据先生成，缺失时直接报错。
++    recovery_tzdata_built := $(strip $(call module-built-files,apex_tzdata))
++    ifeq ($(recovery_tzdata_built),)
++        $(error apex_tzdata has no built output for recovery timezone data)
++    endif
++    LOCAL_REQUIRED_MODULES := apex_tzdata
++    LOCAL_ADDITIONAL_DEPENDENCIES := $(recovery_tzdata_built)
+ 
+     LOCAL_POST_INSTALL_CMD += \
+-        mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/system/usr/share/zoneinfo; \
+-        cp -f $(TARGET_OUT)/usr/share/zoneinfo/tzdata $(TARGET_RECOVERY_ROOT_OUT)/system/usr/share/zoneinfo/;
++        mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/system/usr/share/zoneinfo && \
++        cp -f $(recovery_tzdata_built) $(TARGET_RECOVERY_ROOT_OUT)/system/usr/share/zoneinfo/tzdata;
+     include $(BUILD_PHONY_PACKAGE)
+ endif
+ 

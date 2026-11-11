@@ -1,0 +1,17 @@
+{
+  "firmware": "OS4.0.0.19.XODCNXM",
+  "image_bytes": 104857600,
+  "orangefox_sha256": "e0af4e1c994da54138e154978a3885a18787368a084e543627c15c052ed22488",
+  "stock_sha256": "3bbd522941c598e366c26e5231ca76eed037d6278a985deb2fe52397b55db17e",
+  "validation": {
+    "cold_boot": true,
+    "chinese_ui": true,
+    "display_and_vibration_pages": true,
+    "torch_and_haptics": true,
+    "brightness": true,
+    "existing_userdata_decryption": true,
+    "ksu_upgrade": true,
+    "a_slot_hardware_tested": false,
+    "full_backup_restore_ota_tested": false
+  }
+}

@@ -1,0 +1,15 @@
+--- a/ui/build/soong.go
++++ b/ui/build/soong.go
+@@ -214,6 +214,12 @@
+ 
+ 	commonArgs = append(commonArgs, "-l", filepath.Join(pb.config.FileListDir(), "Android.bp.list"))
+ 	invocationEnv := make(map[string]string)
++	if os.Getenv("DIJUN_SOONG_LOW_MEMORY") == "1" {
++		// Blueprint 以 env -i 启动分析器，必须显式传入 GC 参数才能跨过环境清理。
++		// 只调整 GC 频率并记录轨迹，不设置 Go 内存软上限。
++		invocationEnv["GOGC"] = "40"
++		invocationEnv["GODEBUG"] = "gctrace=1"
++	}
+ 	if pb.debugPort != "" {
+ 		//debug mode
+ 		commonArgs = append(commonArgs, "--delve_listen", pb.debugPort,

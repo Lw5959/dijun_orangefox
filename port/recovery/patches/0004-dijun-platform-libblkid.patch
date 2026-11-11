@@ -1,0 +1,73 @@
+--- a/libblkid/Android.mk
++++ b/libblkid/Android.mk
+@@ -98,6 +98,9 @@
+ 
+ LOCAL_SHARED_LIBRARIES += libc libutil-linux libuuid
+ include $(BUILD_SHARED_LIBRARY)
++
++# 本设备由平台 Soong 提供 libblkid；同文件其余 legacy 模块仍保留。
++ifneq ($(TW_USE_SYSTEM_LIBBLKID),true)
+ 
+ include $(CLEAR_VARS)
+ 
+@@ -197,3 +200,5 @@
+ 
+ LOCAL_SHARED_LIBRARIES += libc libutil-linux
+ include $(BUILD_SHARED_LIBRARY)
++
++endif
+--- a/partition.cpp
++++ b/partition.cpp
+@@ -40,7 +40,7 @@
+ #include <libsnapshot/snapshot.h>
+ 
+ #include "cutils/properties.h"
+-#include "libblkid/include/blkid.h"
++#include <blkid.h>
+ #include "variables.h"
+ #include "twcommon.h"
+ #include "partitions.hpp"
+@@ -2339,6 +2339,11 @@
+ 		return;
+ 
+ 	pr = blkid_new_probe_from_filename(Actual_Block_Device.c_str());
++	// 平台 libblkid 不再接受 NULL probe；打开失败时保留既有文件系统状态。
++	if (!pr) {
++		LOGINFO("Can't create blkid probe for %s\n", Actual_Block_Device.c_str());
++		return;
++	}
+ 	if (blkid_do_fullprobe(pr)) {
+ 		blkid_free_probe(pr);
+ 		LOGINFO("Can't probe device %s\n", Actual_Block_Device.c_str());
+--- a/recovery_utils/roots.cpp
++++ b/recovery_utils/roots.cpp
+@@ -34,7 +34,7 @@
+ #include <android-base/properties.h>
+ #include <android-base/stringprintf.h>
+ #include <android-base/unique_fd.h>
+-#include <blkid/blkid.h>
++#include <blkid.h>
+ #include <ext4_utils/ext4_utils.h>
+ #include <ext4_utils/wipe.h>
+ #include <fs_mgr.h>
+--- a/recovery_utils/Android.bp
++++ b/recovery_utils/Android.bp
+@@ -31,6 +31,8 @@
+     shared_libs: [
+         "android.hardware.health@2.0",
+         "libbase",
++        // 与主 recovery 共用平台 shared provider，不再嵌入第二份 blkid 实现。
++        "libblkid",
+         "libbinder_ndk",
+         "libext4_utils",
+         "libfs_mgr",
+@@ -49,9 +51,6 @@
+         "libhealthshim",
+     ],
+ 
+-    whole_static_libs: [
+-        "libext2_blkid",
+-    ],
+ }
+ 
+ // A utility lib that's local to recovery (in contrast, libotautil is exposed to device-specific

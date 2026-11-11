@@ -1,0 +1,18 @@
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -4822,9 +4822,14 @@
+     --prop com.android.build.vendor_kernel_boot.fingerprint:$(BUILD_FINGERPRINT_FROM_FILE) \
+ 
+ BOARD_AVB_RECOVERY_ADD_HASH_FOOTER_ARGS += \
+-    --prop com.android.build.recovery.fingerprint:$(BUILD_FINGERPRINT_FROM_FILE) \
++    --prop com.android.build.recovery.fingerprint:$(BUILD_FINGERPRINT_FROM_FILE)
++# dijun 原 recovery 不包含 boot OS/patch 属性；boot 分区仍由原厂启动链提供。
++# 恢复用户态版本不能新增为这条启动链的 boot 安全参数。
++ifneq ($(BOARD_RECOVERY_EXCLUDE_BOOT_PROPERTIES),true)
++BOARD_AVB_RECOVERY_ADD_HASH_FOOTER_ARGS += \
+     --prop com.android.build.boot.os_version:$(PLATFORM_VERSION) \
+     --prop com.android.build.boot.security_patch:$(PLATFORM_SECURITY_PATCH)
++endif
+ 
+ BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += \
+     --prop com.android.build.vendor.fingerprint:$(BUILD_FINGERPRINT_FROM_FILE)

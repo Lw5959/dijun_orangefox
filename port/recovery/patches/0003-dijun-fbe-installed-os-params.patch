@@ -1,0 +1,189 @@
+--- a/Android.mk
++++ b/Android.mk
+@@ -356,6 +356,9 @@
+ 
+ ifeq ($(TW_INCLUDE_CRYPTO), true)
+     LOCAL_CFLAGS += -DTW_INCLUDE_CRYPTO -DUSE_FSCRYPT -Wno-macro-redefined
++    ifeq ($(TW_REQUIRE_CRYPTO_BOOT_PARAMS), true)
++        LOCAL_CFLAGS += -DTW_REQUIRE_CRYPTO_BOOT_PARAMS
++    endif
+     LOCAL_SHARED_LIBRARIES += libgpt_twrp
+     LOCAL_C_INCLUDES += external/boringssl/src/include bootable/recovery/crypto
+     TW_INCLUDE_CRYPTO_FBE := true
+--- a/kernel_module_loader.cpp
++++ b/kernel_module_loader.cpp
+@@ -9,6 +9,7 @@
+ #include <android-base/file.h>
+ #include <android-base/strings.h>
+ #include <sys/mount.h>
++#include <cstdio>
+ 
+ static void ResetProp(const std::string& key, const std::string& value) {
+ 	if (value.empty())
+@@ -17,6 +18,84 @@
+ 	std::string cmd = "/system/bin/resetprop " + key + " " + value;
+ 	TWFunc::Exec_Cmd(cmd);
+ }
++
++#ifdef TW_REQUIRE_CRYPTO_BOOT_PARAMS
++// KeyMint 将原 Android 的 OS/patch 参数绑定到现有 keyblob；不能用恢复系统默认值试升级。
++static bool IsInstalledAndroidRelease(const std::string& value) {
++	return !value.empty() && value.front() >= '1' && value.front() <= '9' &&
++		value.back() != '.' && value.find("..") == std::string::npos &&
++		value.find_first_not_of("0123456789.") == std::string::npos;
++}
++
++static bool IsInstalledAndroidPatch(const std::string& value) {
++	if (value.size() != 10 || value[4] != '-' || value[7] != '-')
++		return false;
++	for (size_t i = 0; i < value.size(); ++i) {
++		if (i != 4 && i != 7 && (value[i] < '0' || value[i] > '9'))
++			return false;
++	}
++	int year, month, day;
++	return std::sscanf(value.c_str(), "%4d-%2d-%2d", &year, &month, &day) == 3 &&
++		year >= 1970 && month >= 1 && month <= 12 && day >= 1 && day <= 31;
++}
++
++static bool PrepareInstalledAndroidCryptoParams(TWPartition* vendor, TWPartition* system) {
++	const bool vendor_was_mounted = vendor && vendor->Is_Mounted();
++	const bool system_was_mounted = system && system->Is_Mounted();
++	bool prepared = false;
++	do {
++		// 只从实际系统分区读取；没有 /system_root 时不绑定 recovery 的 /system 冒充原系统。
++		if (!vendor || !system || !vendor->Mount(false) || !system->Mount(false)) {
++			LOGERR("FBE: original system/vendor unavailable; crypto parameters not prepared.\n");
++			break;
++		}
++		const std::string release = TWFunc::Partition_Property_Get(
++			"ro.build.version.release", PartitionManager, "/system_root", "build.prop");
++		const std::string system_patch = TWFunc::Partition_Property_Get(
++			"ro.build.version.security_patch", PartitionManager, "/system_root", "build.prop");
++		const std::string vendor_patch = TWFunc::Partition_Property_Get(
++			"ro.vendor.build.security_patch", PartitionManager, "/vendor", "build.prop");
++		if (!IsInstalledAndroidRelease(release) || !IsInstalledAndroidPatch(system_patch) ||
++			!IsInstalledAndroidPatch(vendor_patch)) {
++			LOGERR("FBE: original Android version/patch properties missing or invalid.\n");
++			break;
++		}
++		// O1 Configure 使用 OS version/patch；vendor patch 仅保留真实属性供其消费者读取。
++		const std::string recovery_release = android::base::GetProperty("ro.build.version.release", "");
++		android::base::SetProperty("twrp.crypto.recovery_release", recovery_release);
++		ResetProp("ro.build.version.release", release);
++		ResetProp("ro.build.version.security_patch", system_patch);
++		ResetProp("ro.vendor.build.security_patch", vendor_patch);
++		if (android::base::GetProperty("ro.build.version.release", "") != release ||
++			android::base::GetProperty("ro.build.version.security_patch", "") != system_patch ||
++			android::base::GetProperty("ro.vendor.build.security_patch", "") != vendor_patch) {
++			LOGERR("FBE: installed Android crypto parameter readback failed.\n");
++			break;
++		}
++		android::base::SetProperty("twrp.crypto.android_release", release);
++		LOGINFO("FBE: installed Android %s OS patch %s vendor property %s; recovery base %s.\n",
++			release.c_str(), system_patch.c_str(), vendor_patch.c_str(), recovery_release.c_str());
++		prepared = true;
++	} while (false);
++
++	// 所有路径都恢复本函数新建的挂载，让随后 prebuilt 加载能看到 ramdisk 模块目录。
++	// 不卸载进入时已挂载的分区；清理失败也不得向 init 发布参数 ready。
++	bool cleanup_ok = true;
++	if (system && !system_was_mounted && system->Is_Mounted()) {
++		if (!system->UnMount(false) || system->Is_Mounted()) {
++			LOGERR("FBE: cannot restore original system mount state; crypto parameters not ready.\n");
++			cleanup_ok = false;
++		}
++	}
++	if (vendor && !vendor_was_mounted && vendor->Is_Mounted()) {
++		if (!vendor->UnMount(false) || vendor->Is_Mounted()) {
++			LOGERR("FBE: cannot restore original vendor mount state; crypto parameters not ready.\n");
++			cleanup_ok = false;
++		}
++	}
++	return prepared && cleanup_ok;
++}
++#endif
+ #endif
+ 
+ #ifdef TW_LOAD_VENDOR_MODULES
+@@ -248,8 +327,10 @@
+ 
+ 	int modules_loaded = 0;
+ #ifdef TW_INCLUDE_CRYPTO
++#ifndef TW_REQUIRE_CRYPTO_BOOT_PARAMS
+ 	std::string vendor_patch;
+ 	std::string system_patch;
++#endif
+ 	TWPartition* sysroot = PartitionManager.Find_Partition_By_Path("/system_root");
+ #endif
+ 
+@@ -263,6 +344,13 @@
+ 	TWPartition* ven = PartitionManager.Find_Partition_By_Path("/vendor");
+ 	TWPartition* ven_dlkm = PartitionManager.Find_Partition_By_Path("/vendor_dlkm");
+ 	TWPartition* sys_dlkm = PartitionManager.Find_Partition_By_Path("/system_dlkm");
++
++#ifdef TW_REQUIRE_CRYPTO_BOOT_PARAMS
++	// 必须在所有 prebuilt/vendor_boot 成功 goto 之前完成，服务触发不能绕过真实参数读取。
++	const bool crypto_params_ready = PrepareInstalledAndroidCryptoParams(ven, sysroot);
++	if (!android::base::SetProperty("twrp.crypto.boot_params.ready", crypto_params_ready ? "true" : "false"))
++		LOGERR("FBE: cannot publish installed Android crypto parameter state.\n");
++#endif
+ 
+ 	vendor_module_dirs.push_back(VENDOR_MODULE_DIR);
+ 	vendor_module_dirs.push_back(vendor_base_dir + "/1.1");
+@@ -329,7 +417,7 @@
+ 		ven->Mount(true);
+ 	}
+ 
+-#ifdef TW_INCLUDE_CRYPTO
++#if defined(TW_INCLUDE_CRYPTO) && !defined(TW_REQUIRE_CRYPTO_BOOT_PARAMS)
+ 	LOGINFO("Beginning override security patch...\n");
+ 
+ 	vendor_patch = TWFunc::Partition_Property_Get("ro.vendor.build.security_patch", PartitionManager, "/vendor", "build.prop");
+--- a/partitionmanager.cpp
++++ b/partitionmanager.cpp
+@@ -670,6 +670,13 @@
+ 
+ void TWPartitionManager::Decrypt_Data() {
+ 	#ifdef TW_INCLUDE_CRYPTO
++#ifdef TW_REQUIRE_CRYPTO_BOOT_PARAMS
++	// 参数失败时不进入 keystore/metadata 路径，避免等待未启动 HAL 或触发现有 key 升级。
++	if (!android::base::GetBoolProperty("twrp.crypto.boot_params.ready", false)) {
++		LOGERR("FBE: installed Android crypto parameters unavailable; decryption stopped before KeyMint.\n");
++		return;
++	}
++#endif
+ 	TWPartition* Decrypt_Data = Find_Partition_By_Path("/data");
+ 	if (Decrypt_Data && Decrypt_Data->Is_Encrypted && !Decrypt_Data->Is_Decrypted) {
+ 		Set_Crypto_State();
+@@ -683,7 +690,17 @@
+ #ifdef USE_FSCRYPT
+ 			std::vector<std::string> user_devices;
+ 			std::vector<bool> device_aliased;
+-			if (android::vold::fscrypt_mount_metadata_encrypted(Decrypt_Data->Actual_Block_Device, Decrypt_Data->Mount_Point, false, false, Decrypt_Data->Current_File_System, false, user_devices, device_aliased, 0, TWFunc::Path_Exists(additional_fstab) ? additional_fstab : "")) {
++#ifdef TW_REQUIRE_CRYPTO_BOOT_PARAMS
++			// 本配置跳过 additional.fstab，明确使用带原厂 wrapped-key 参数的 v2 fstab。
++			const std::string metadata_fstab = "/etc/recovery.fstab";
++			if (!TWFunc::Path_Exists(metadata_fstab)) {
++				LOGERR("FBE: required recovery fstab %s unavailable; metadata decryption stopped.\n", metadata_fstab.c_str());
++				return;
++			}
++#else
++			const std::string metadata_fstab = TWFunc::Path_Exists(additional_fstab) ? additional_fstab : "";
++#endif
++			if (android::vold::fscrypt_mount_metadata_encrypted(Decrypt_Data->Actual_Block_Device, Decrypt_Data->Mount_Point, false, false, Decrypt_Data->Current_File_System, false, user_devices, device_aliased, 0, metadata_fstab)) {
+ 				std::string crypto_blkdev = android::base::GetProperty("ro.crypto.fs_crypto_blkdev", "error");
+ 				Decrypt_Data->Decrypted_Block_Device = crypto_blkdev;
+ 				LOGINFO("Successfully decrypted metadata encrypted data partition with new block device: '%s'\n", crypto_blkdev.c_str());
+@@ -2341,6 +2358,12 @@
+ 
+ int TWPartitionManager::Decrypt_Device(string Password, int user_id) {
+ #ifdef TW_INCLUDE_CRYPTO
++#ifdef TW_REQUIRE_CRYPTO_BOOT_PARAMS
++  if (!android::base::GetBoolProperty("twrp.crypto.boot_params.ready", false)) {
++    LOGERR("FBE: installed Android crypto parameters unavailable; user decryption not started.\n");
++    return -1;
++  }
++#endif
+   char crypto_blkdev[PROPERTY_VALUE_MAX];
+   std::vector < TWPartition * >::iterator iter;
+ 

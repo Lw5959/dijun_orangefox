@@ -1,0 +1,51 @@
+# 来源：当前 OS4.0.0.19 的三个原厂 MiTEE/Gatekeeper/KeyMint rc。
+# 保留原服务名、可执行路径、class、UID/GID、参数和 capabilities。
+# 使用 OrangeFox 原有 recovery SELinux domain；不引入 Android 厂商专用新 domain。
+# disabled 仅避免 class_start 抢先启动，原生模块加载完成属性随后显式启动它们。
+
+service tee-supplicant /vendor/bin/tee-supplicant
+    class core
+    user system
+    group system secure_element nfc
+    capabilities SYS_RAWIO
+    seclabel u:r:recovery:s0
+    disabled
+
+service vendor.keymint-mitee /vendor/bin/hw/android.hardware.security.keymint@3.0-service.mitee
+    class early_hal
+    user system
+    group system drmrpc
+    seclabel u:r:recovery:s0
+    disabled
+
+service vendor.gatekeeper_mitee /vendor/bin/hw/android.hardware.gatekeeper-service.mitee
+    class hal
+    user system
+    group system
+    seclabel u:r:recovery:s0
+    disabled
+
+# 模块加载器在 twrp.modules.loaded 发布前完成 vendor_boot/预置模块加载和卸载。
+# 此时 ramdisk 中的同路径 HAL/库/TA 可见，既有 /vendor 分区无需保持挂载。
+# persist 仅建立只读、禁日志回放的视图，不创建或替换其中的 secure-storage。
+on property:twrp.modules.loaded=true && property:twrp.crypto.boot_params.ready=true
+    wait /dev/tee0 10
+    wait /dev/teepriv0 10
+    wait /dev/rpmb0 10
+    mkdir /mnt/vendor 0755 root root
+    mkdir /mnt/vendor/persist 0755 system system
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist ro noatime nosuid nodev noload
+    chmod 0660 /dev/tee0
+    chmod 0600 /dev/teepriv0
+    chmod 0600 /dev/rpmb0
+    chmod 0600 /dev/ufs-bsg0
+    chown system system /dev/tee0
+    chown system system /dev/teepriv0
+    chown system system /dev/rpmb0
+    chown system system /dev/ufs-bsg0
+    setprop ro.hardware.gatekeeper mitee
+    # 原厂 on fs 同样先准备设备、启用 KeyMint 并启动 supplicant。
+    # Binder waitForService 由真实接口注册解除，不伪造 ready/decrypted 属性。
+    start tee-supplicant
+    start vendor.keymint-mitee
+    start vendor.gatekeeper_mitee

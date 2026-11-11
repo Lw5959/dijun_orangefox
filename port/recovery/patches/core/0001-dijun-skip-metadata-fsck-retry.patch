@@ -1,0 +1,20 @@
+Subject: [PATCH] fs_mgr: skip metadata fsck retry for opted-in recovery
+Base-commit: 1e08a1374a2ebebd1ae828e44a53535f12c30258
+
+diff --git a/fs_mgr/fs_mgr.cpp b/fs_mgr/fs_mgr.cpp
+--- a/fs_mgr/fs_mgr.cpp
++++ b/fs_mgr/fs_mgr.cpp
+@@ -1889,6 +1889,13 @@
+                 PERROR << "Cannot mount filesystem on " << n_blk_device << " at " << mount_point
+                        << " with fstype " << fstab_entry.fs_type;
+                 fs_stat |= FS_STAT_FULL_MOUNT_FAILED;
++                // 本机恢复挂载失败时保留原盘状态，不在 metadata/FBE 设备上自动修盘。
++                // 默认关闭此属性，其他 Android 挂载仍沿用原 fsck 重试。
++                if (GetBoolProperty("ro.crypto.recovery_preserve_keys", false) &&
++                    (mount_point == "/metadata" || should_use_metadata_encryption(fstab_entry))) {
++                    LERROR << "Recovery preserving FBE keys; skipping metadata fsck retry";
++                    break;
++                }
+                 // try again after fsck
+                 check_fs(n_blk_device, fstab_entry.fs_type, mount_point, &fs_stat);
+             }

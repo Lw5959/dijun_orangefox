@@ -1,0 +1,23 @@
+{
+  "firmware": "OS4.0.0.19.XODCNXM",
+  "files": [
+    {
+      "source": "build/recovery/stock/recovery_b/ramdisk-00/root/system/bin/hw/android.hardware.boot-service.xring.recovery",
+      "file": "proprietary/boot-hal/android.hardware.boot-service.xring.recovery",
+      "bytes": 136608,
+      "sha256": "af1ce0aa89fdea0d26e47dbf78a0cf64cb3a4c7db0384ab17de5c4a56b0f489a"
+    },
+    {
+      "source": "build/recovery/stock/recovery_b/ramdisk-00/root/system/etc/init/android.hardware.boot-service.xring.recovery.rc",
+      "file": "boot-hal/android.hardware.boot-service.xring.recovery.rc",
+      "bytes": 237,
+      "sha256": "a7502904766c2f4533b73b2e20a0fd099a0f7ae4cd212e525c7e1734e01d5ff3"
+    },
+    {
+      "source": "build/recovery/stock/recovery_b/ramdisk-00/root/system/etc/vintf/manifest/android.hardware.boot-service.xring.xml",
+      "file": "boot-hal/android.hardware.boot-service.xring.xml",
+      "bytes": 274,
+      "sha256": "d1e36325d068e4a5231344df3ad04ff2de38e2951be74cff1cb0271d65a62ce7"
+    }
+  ]
+}

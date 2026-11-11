@@ -1,0 +1,25 @@
+cc_prebuilt_binary {
+    name: "android.hardware.boot-service.xring.recovery",
+    srcs: [":dijun_stock_boot_service_binary"],
+    relative_install_path: "hw",
+    recovery: true,
+    compile_multilib: "64",
+    // 保持原件字节，完整 ELF 依赖检查交给真实 OrangeFox 16 构建，不能预先宣称 ABI 通过。
+    strip: {
+        none: true,
+    },
+    check_elf_files: true,
+    init_rc: ["android.hardware.boot-service.xring.recovery.rc"],
+    vintf_fragments: ["android.hardware.boot-service.xring.xml"],
+    shared_libs: [
+        "liblog",
+        "libbase",
+        "libbinder_ndk",
+        "android.hardware.boot@1.1",
+        "android.hardware.boot-V1-ndk",
+        "libc++",
+        "libc",
+        "libm",
+        "libdl",
+    ],
+}

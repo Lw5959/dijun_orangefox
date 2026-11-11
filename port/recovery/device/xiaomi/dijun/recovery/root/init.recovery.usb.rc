@@ -1,0 +1,46 @@
+# dijun 的实际 ConfigFS MTP/ADB 接线，替换上游 legacy android_usb 脚本。
+# 上游 init.rc 直接 import 本文件；MTP 与 ADB 共用原厂 e1ac0000.dwc3 gadget。
+# import 在主 rc 解析完后执行，所以本 on fs 排在上游的 configfs/g1 和
+# /dev/usb-ffs 初始化之后。MTP server 检测此 ep0 后采用现有 FFS 后端。
+on fs && property:sys.usb.configfs=1
+    mkdir /config/usb_gadget/g1/functions/ffs.mtp
+    mkdir /dev/usb-ffs/mtp 0770 shell shell
+    mount functionfs mtp /dev/usb-ffs/mtp rmode=0770,fmode=0660,uid=2000,gid=2000
+
+on property:sys.usb.config=mtp,adb && property:sys.usb.configfs=1
+    start adbd
+
+# 两个用户态端都写完 FFS descriptors 后才绑定；任一 ready 先到均可触发。
+# VID 使用上游 recovery 属性；4EE2 是 Enable_MTP() 的默认 usb.product.mtpadb，
+# 这里没有把它解释成小米专用 PID。其他模式的 PID 仍取上游 recovery 属性。
+on property:sys.usb.config=mtp,adb && property:sys.usb.configfs=1 && property:sys.usb.ffs.ready=1 && property:sys.usb.ffs.mtp.ready=1
+    write /config/usb_gadget/g1/idVendor 0x${ro.recovery.usb.vid}
+    write /config/usb_gadget/g1/idProduct 0x4EE2
+    write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "mtp_adb"
+    symlink /config/usb_gadget/g1/functions/ffs.mtp /config/usb_gadget/g1/configs/b.1/f1
+    symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f2
+    write /config/usb_gadget/g1/UDC ${sys.usb.controller}
+    setprop sys.usb.state ${sys.usb.config}
+
+# 上游 none/configfs=1 只清 f1；startupArgs 的 fastboot 路径还会临时置
+# configfs=0。这里不加 configfs 条件，确保该窗口也先解绑、清理两个链接、
+# 复位两个 ready，避免随后 ADB/fastboot/sideload 绑定到旧 MTP 组合。
+# 重复清理不存在的链接是 init 的非致命操作，不增加新的 adbd service。
+on property:sys.usb.config=none
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
+    setprop sys.usb.ffs.ready 0
+    setprop sys.usb.ffs.mtp.ready 0
+
+# Recovery 退出会关闭 MTP 的 FFS 端点；旧组合仍绑定会使 ADB 一起消失。
+# 仅在该组合中退回独立 ADB，避免覆盖 fastbootd/sideload 已选择的 USB 模式。
+on property:init.svc.recovery=stopped && property:sys.usb.config=mtp,adb
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
+    stop adbd
+    setprop sys.usb.ffs.ready 0
+    setprop sys.usb.ffs.mtp.ready 0
+    setprop sys.usb.config adb
+

@@ -1,0 +1,13 @@
+{
+  "source_sha256": "54b8472ae8e7270640fb692176853393458eb38d7ea3271fd391e7d818c8b5db",
+  "patched_sha256": "1dbdc37d0263cc51670ca40a3333da2615f79160bc0a8e1f6948a40ee974b82e",
+  "bytes": 692267,
+  "semantic_changes": [
+    "(allow kernel vendor_file (system (firmware_load)))",
+    "(class system (ipc_info syslog_read syslog_mod syslog_console module_request module_load firmware_load))"
+  ],
+  "only_expected_cil_changes": true,
+  "android_netlink_config_preserved": true,
+  "enforcing_or_permissive_map_changed": false,
+  "unknown_permissions_still_denied": true
+}

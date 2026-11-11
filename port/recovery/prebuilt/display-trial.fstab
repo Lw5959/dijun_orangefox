@@ -1,0 +1,4 @@
+# 第一轮只验证真实 OrangeFox 启动、DRM、触控和 ADB。
+# /data、/metadata 和 Android 逻辑分区均不加入本轮挂载表；完整解密仍待适配。
+# 保留 BCB，使退出 recovery 后能够正常启动 Android。
+/dev/block/by-name/misc /misc emmc defaults defaults

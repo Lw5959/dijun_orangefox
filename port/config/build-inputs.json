@@ -1,0 +1,20 @@
+{
+  "firmware": "OS4.0.0.19.XODCNXM",
+  "donor": {
+    "file": "inputs/recovery/donors/infiniti-r12.0_2/OrangeFox-R12.0_2-infiniti.zip",
+    "sha256": "33a31b13b1eebe1cdbb78f4ebdec132d70a5ae0874cbfb927f75f8ee65068bea",
+    "source_page": "https://orangefox.download/release/69f78ad93ba4241a6c1e09a9"
+  },
+  "stock": {
+    "recovery_b.img": {
+      "file": "inputs/recovery/os4-0-0-19/recovery_b.img",
+      "bytes": 104857600,
+      "sha256": "3bbd522941c598e366c26e5231ca76eed037d6278a985deb2fe52397b55db17e"
+    },
+    "vendor_boot_b.img": {
+      "file": "inputs/recovery/os4-0-0-19/vendor_boot_b.img",
+      "bytes": 100663296,
+      "sha256": "0791386fb74933a1c568b4e2831f26d70d652de0a31acb158173a04aed2d75a8"
+    }
+  }
+}

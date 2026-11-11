@@ -1,0 +1,42 @@
+# dijun / OS4.0.0.19：Android v2 fstab。不要固化当前 dm 编号或当前槽。
+# logical 分区只读挂载；保留原厂可用的 erofs/ext4 双条目。
+system          /system_root    erofs   ro                              wait,slotselect,logical
+system          /system_root    ext4    ro,barrier=1                    wait,slotselect,logical
+system_ext      /system_ext     erofs   ro                              wait,slotselect,logical
+system_ext      /system_ext     ext4    ro,barrier=1                    wait,slotselect,logical
+vendor          /vendor         erofs   ro                              wait,slotselect,logical
+vendor          /vendor         ext4    ro,barrier=1                    wait,slotselect,logical
+product         /product        erofs   ro                              wait,slotselect,logical
+product         /product        ext4    ro,barrier=1                    wait,slotselect,logical
+vendor_dlkm     /vendor_dlkm    erofs   ro                              wait,slotselect,logical
+vendor_dlkm     /vendor_dlkm    ext4    ro,barrier=1                    wait,slotselect,logical
+system_dlkm     /system_dlkm    erofs   ro                              wait,slotselect,logical
+system_dlkm     /system_dlkm    ext4    ro,barrier=1                    wait,slotselect,logical
+odm             /odm            erofs   ro                              wait,slotselect,logical
+odm             /odm            ext4    ro,barrier=1                    wait,slotselect,logical
+odm_dlkm        /odm_dlkm       erofs   ro                              wait,slotselect,logical
+odm_dlkm        /odm_dlkm       ext4    ro,barrier=1                    wait,slotselect,logical
+
+# 原厂 FBE v2 + metadata encryption + wrapped key，绝不以格式化替代解密。
+/dev/block/by-name/userdata  /data      f2fs noatime,nosuid,nodev,discard,reserve_root=32768,fsync_mode=nobarrier,gc_merge,resgid=1065,inlinecrypt,atgc wait,latemount,quota,checkpoint=fs,sysfs_path=/sys/devices/platform/soc/e1a40000.dwc_ufs,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption,metadata_encryption=aes-256-xts:wrappedkey_v0
+/dev/block/by-name/metadata  /metadata  f2fs noatime,nosuid,nodev,discard wait
+
+# 沿用原厂 BCB 位置，让 recovery 正常读取/结束启动请求；O1 槽位仍交原厂 HAL。
+# 首次试启动前另行只读检查待执行 BCB/ORS，不能以此条目代替无清数据预检。
+/dev/block/by-name/misc      /misc      emmc defaults defaults
+
+# 槽后缀由启动信息解析，当前虽为 _b，配置不会写死为 _b。
+/dev/block/by-name/boot         /boot         emmc defaults slotselect
+/dev/block/by-name/init_boot    /init_boot    emmc defaults slotselect
+/dev/block/by-name/vendor_boot  /vendor_boot  emmc defaults slotselect
+/dev/block/by-name/dtbo         /dtbo         emmc defaults slotselect
+/dev/block/by-name/recovery     /recovery     emmc defaults slotselect
+/dev/block/by-name/vbmeta       /vbmeta       emmc defaults slotselect
+/dev/block/by-name/vbmeta_system /vbmeta_system emmc defaults slotselect
+/dev/block/by-name/vbmeta_vendor /vbmeta_vendor emmc defaults slotselect
+
+# 原厂 rescue 不是传统可清空的 cache。persist/校准/基带分区不提供清除入口。
+/dev/block/by-name/persist /mnt/vendor/persist ext4 ro,noload,noatime,nosuid,nodev,barrier=1 wait
+# OrangeFox 按首个 * 之前的前缀匹配，不能使用 /soc/*，否则内置 UFS 也被当作 OTG。
+# USB 控制器路径已在本机 sysfs 读回；只放行该控制器下的外部块设备。
+/devices/platform/soc/e1ac0000.xr_usb/e1ac0000.dwc3/xhci-hcd.*.auto* /storage/usbotg vfat nosuid,nodev wait,voldmanaged=usbotg:auto

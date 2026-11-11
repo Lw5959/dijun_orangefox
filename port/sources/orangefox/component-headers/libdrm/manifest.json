@@ -1,0 +1,35 @@
+{
+  "revision": "67cbe8f48064a65de2fca4d6be4885ae277fd089",
+  "files": [
+    {
+      "path": "xf86drm.h",
+      "bytes": 37395,
+      "sha256": "ca8c9d7a8685ae0b3951515b666acd927c2289cbc025a5be541cd19c4206ad46",
+      "url": "https://android.googlesource.com/platform/external/libdrm/+/67cbe8f48064a65de2fca4d6be4885ae277fd089/xf86drm.h?format=TEXT"
+    },
+    {
+      "path": "xf86drmMode.h",
+      "bytes": 16557,
+      "sha256": "96d7da4829bd41f41a3e26011c7cf9a63a597d66407f3348aa9bb2bd3712e2e2",
+      "url": "https://android.googlesource.com/platform/external/libdrm/+/67cbe8f48064a65de2fca4d6be4885ae277fd089/xf86drmMode.h?format=TEXT"
+    },
+    {
+      "path": "include/drm/drm.h",
+      "bytes": 45668,
+      "sha256": "6b80aff056e2ac2e126e5144a3ce2c750292edb4d080d4689ac487dc17e4dae8",
+      "url": "https://android.googlesource.com/platform/external/libdrm/+/67cbe8f48064a65de2fca4d6be4885ae277fd089/include/drm/drm.h?format=TEXT"
+    },
+    {
+      "path": "include/drm/drm_mode.h",
+      "bytes": 41241,
+      "sha256": "9f448400da792096a0eb253e7b88b410afd571ee94a0d6c6f11cdcec82d768da",
+      "url": "https://android.googlesource.com/platform/external/libdrm/+/67cbe8f48064a65de2fca4d6be4885ae277fd089/include/drm/drm_mode.h?format=TEXT"
+    },
+    {
+      "path": "include/drm/drm_fourcc.h",
+      "bytes": 69530,
+      "sha256": "b9eb43e81c809d1faa517c67fa0ed69bf4f9e8a16c423dac8bd284c52af062fb",
+      "url": "https://android.googlesource.com/platform/external/libdrm/+/67cbe8f48064a65de2fca4d6be4885ae277fd089/include/drm/drm_fourcc.h?format=TEXT"
+    }
+  ]
+}

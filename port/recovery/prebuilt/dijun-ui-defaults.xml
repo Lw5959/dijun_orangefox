@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recovery>
+    <templates>
+        <template name="dijun_ui_defaults">
+            <!-- 解密页已读取旧设置，必须在此后应用；仅在本次进程首次进入时执行。
+                 marker 不放进 variables，避免主题重载将它重置而反复重载。
+                 O1 原厂振动服务已接入，触觉反馈沿用 OrangeFox 保存的设置。 -->
+            <action>
+                <condition var1="dijun_ui_defaults_applied" op="!=" var2="1"/>
+                <action function="set">dijun_ui_defaults_applied=1</action>
+                <action function="set">tw_language=zh_CN</action>
+                <action function="setlanguage"/>
+            </action>
+        </template>
+    </templates>
+</recovery>

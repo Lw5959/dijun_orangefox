@@ -1,0 +1,10 @@
+<!--
+    Input:
+        vendor/xring/bootctrl/hal/aidl/android.hardware.boot-service.xring.xml
+-->
+<manifest version="8.0" type="device">
+    <hal format="aidl">
+        <name>android.hardware.boot</name>
+        <fqname>IBootControl/default</fqname>
+    </hal>
+</manifest>

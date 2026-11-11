@@ -1,0 +1,157 @@
+--- a/orangefox_soong.mk
++++ b/orangefox_soong.mk
+@@ -20,5 +20,6 @@
+ 
+ # additional soong variables
+ EXPORT_TO_SOONG += \
+-   OF_LANDSCAPE_MODE
++   OF_LANDSCAPE_MODE \
++   TW_DRM_SINGLE_PLANE
+ #
+--- a/minuitwrp/libminuitwrp_defaults.go
++++ b/minuitwrp/libminuitwrp_defaults.go
+@@ -79,6 +79,11 @@
+ 	case "BGRA_8888":
+ 		cflags = append(cflags, "-DRECOVERY_BGRA")
+ 		break
++	}
++
++	// dijun 使用通用单 primary plane，不使用 Qualcomm 的双 mixer 假设。
++	if getMakeVars(ctx, "TW_DRM_SINGLE_PLANE") == "true" {
++		cflags = append(cflags, "-DTW_DRM_SINGLE_PLANE")
+ 	}
+ 
+ 	var tw_rotation = getMakeVars(ctx, "TW_ROTATION")
+--- a/minuitwrp/graphics_drm.cpp
++++ b/minuitwrp/graphics_drm.cpp
+@@ -71,11 +71,17 @@
+     GRSurface base;
+     uint32_t fb_id;
+     uint32_t handle;
++    uint32_t fourcc;
+ };
+ 
+ #define NUM_MAIN 1
+ #define NUM_PLANES 4
++#ifdef TW_DRM_SINGLE_PLANE
++// XRING 的 primary plane 覆盖整屏，不按 SDE mixer 拆分坐标。
++#define DEFAULT_NUM_LMS 1
++#else
+ #define DEFAULT_NUM_LMS 2
++#endif
+ 
+ #define SPR_INIT_PARAM_SIZE_1 4
+ #define SPR_INIT_PARAM_SIZE_2 5
+@@ -301,7 +307,7 @@
+   return DEFAULT_NUM_LMS;
+ }
+ 
+-static uint32_t get_topology_lm_number(int fd, uint32_t blob_id) {
++[[maybe_unused]] static uint32_t get_topology_lm_number(int fd, uint32_t blob_id) {
+   uint32_t num_lm = DEFAULT_NUM_LMS;
+ 
+   drmModePropertyBlobRes *blob = drmModeGetPropertyBlob(fd, blob_id);
+@@ -713,7 +719,9 @@
+     }
+     surface->handle = create_dumb.handle;
+ 
+-    uint32_t handles[4], pitches[4], offsets[4];
++    // libdrm 会传递全部四个槽；未使用的 plane 必须保持零。
++    uint32_t handles[4] = {}, pitches[4] = {}, offsets[4] = {};
++    surface->fourcc = format;
+ 
+     handles[0] = surface->handle;
+     pitches[0] = create_dumb.pitch;
+@@ -931,6 +939,42 @@
+ 
+ }
+ 
++#ifdef TW_DRM_SINGLE_PLANE
++// DRM 枚举顺序不能表达用途；只选择可连接到当前 CRTC、支持实际 FB 格式的 primary。
++static drmModePlane* find_primary_plane(drmModePlaneRes* options, uint32_t crtc_mask,
++                                       uint32_t format) {
++  for (uint32_t i = 0; i < options->count_planes; ++i) {
++    drmModePlane* plane = drmModeGetPlane(drm_fd, options->planes[i]);
++    if (!plane) continue;
++    bool compatible = (plane->possible_crtcs & crtc_mask) != 0;
++    bool supports_format = false;
++    for (uint32_t j = 0; j < plane->count_formats; ++j)
++      if (plane->formats[j] == format) supports_format = true;
++    bool primary = false;
++    drmModeObjectProperties* props = drmModeObjectGetProperties(
++        drm_fd, plane->plane_id, DRM_MODE_OBJECT_PLANE);
++    if (props) {
++      for (uint32_t j = 0; j < props->count_props; ++j) {
++        drmModePropertyRes* prop = drmModeGetProperty(drm_fd, props->props[j]);
++        if (!prop) continue;
++        if (!strcmp(prop->name, "type") && props->prop_values[j] == DRM_PLANE_TYPE_PRIMARY)
++          primary = true;
++        drmModeFreeProperty(prop);
++      }
++      drmModeFreeObjectProperties(props);
++    }
++    if (compatible && supports_format && primary) {
++      printf("DRM single primary plane=%u crtc_mask=%u format=%08x\n",
++             plane->plane_id, crtc_mask, format);
++      return plane;
++    }
++    drmModeFreePlane(plane);
++  }
++  printf("DRM: no compatible primary plane for current CRTC/format\n");
++  return nullptr;
++}
++#endif
++
+ static GRSurface* drm_init(minui_backend* backend __unused) {
+   drmModeRes* res = nullptr;
+ 
+@@ -993,6 +1037,11 @@
+     return nullptr;
+   }
+ 
++#ifdef TW_DRM_SINGLE_PLANE
++  uint32_t crtc_mask = 0;
++  for (int i = 0; i < res->count_crtcs && i < 32; ++i)
++    if (res->crtcs[i] == main_monitor_crtc->crtc_id) crtc_mask = 1U << i;
++#endif
+   disable_non_main_crtcs(drm_fd, res, main_monitor_crtc);
+ 
+   main_monitor_crtc->mode = main_monitor_connector->modes[selected_mode];
+@@ -1003,6 +1052,7 @@
+   printf("width: %d, height: %d\n", width, height);
+ 
+   drmModeFreeResources(res);
++  res = nullptr;  // 后续分配失败路径不得再次释放已销毁的资源。
+ 
+   drm_surfaces[0] = drm_create_surface(width, height);
+   drm_surfaces[1] = drm_create_surface(width, height);
+@@ -1090,19 +1140,29 @@
+       /* Get preferred mode information and extract the
+        * number of layer mixers needed from the topology name.
+        */
++#ifndef TW_DRM_SINGLE_PLANE
+       if (!strcmp(conn_res.props_info[j]->name, "mode_properties")) {
+         number_of_lms = get_topology_lm_number(drm_fd, conn_res.props->prop_values[j]);
+         printf("number of lms in topology %d\n", number_of_lms);
+       }
++#endif
+     }
+   }
+ 
+   /* Set plane resources */
++#ifdef TW_DRM_SINGLE_PLANE
++  plane_res[0].plane = find_primary_plane(plane_options, crtc_mask, drm_surfaces[0]->fourcc);
++  if (!plane_res[0].plane) {
++    drmModeFreePlaneResources(plane_options);
++    return nullptr;
++  }
++#else
+   for(uint32_t i = 0; i < number_of_lms; ++i) {
+     plane_res[i].plane = drmModeGetPlane(drm_fd, plane_options->planes[i]);
+     if (!plane_res[i].plane)
+       return NULL;
+   }
++#endif
+ 
+   for (uint32_t i = 0; i < number_of_lms; ++i) {
+     struct Plane *obj = &plane_res[i];

@@ -1,0 +1,17 @@
+*.img
+*.zip
+*.zip.sha256
+*.ko
+*.so
+*.bin
+__pycache__/
+*.pyc
+.DS_Store
+/build/
+/dist/
+/port/build/
+/port/inputs/
+/port/.venv/
+/port/recovery/device/xiaomi/dijun/proprietary/boot-hal/android.hardware.boot-service.xring.recovery
+/port/recovery/device/xiaomi/dijun/proprietary/*/vendor/
+/port/recovery/device/xiaomi/dijun/proprietary/*/odm/

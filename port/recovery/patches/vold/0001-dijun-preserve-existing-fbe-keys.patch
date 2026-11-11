@@ -1,0 +1,65 @@
+Subject: [PATCH] vold: preserve existing FBE keys for opted-in recovery
+Base-commit: 953de9608eb78380b3c4e39e801c2bc0af7dbddc
+
+diff --git a/FsCrypt.cpp b/FsCrypt.cpp
+--- a/FsCrypt.cpp
++++ b/FsCrypt.cpp
+@@ -192,6 +192,11 @@
+ // Discard all keys but the named one; rename it to canonical name.
+ static bool fixate_user_ce_key(const std::string& directory_path, const std::string& to_fix,
+                                const std::vector<std::string>& paths) {
++    // 恢复只使用已展开的候选；后续安装失败也必须保留全部旧 key 和原路径。
++    if (android::base::GetBoolProperty("ro.crypto.recovery_preserve_keys", false)) {
++        LOG(INFO) << "Recovery preserving CE key candidates in " << directory_path;
++        return true;
++    }
+     bool need_sync = false;
+     for (auto const other_path : paths) {
+         if (other_path != to_fix) {
+@@ -551,8 +556,12 @@
+ 
+     KeyBuffer device_key;
+ install:
++    // 恢复不得把缺失的 systemwide key 当作首次开机；复用 neverGen 的失败返回。
+     if (!retrieveOrGenerateKey(device_key_path, device_key_temp, kEmptyAuthentication,
+-                               makeGen(s_data_options), &device_key))
++                               android::base::GetBoolProperty("ro.crypto.recovery_preserve_keys", false)
++                                       ? android::vold::neverGen()
++                                       : makeGen(s_data_options),
++                               &device_key))
+         return false;
+ 
+     // This initializes s_device_policy, which is a global variable so that
+@@ -655,15 +664,23 @@
+     LOG(INFO) << "fscrypt_init_user0";
+ 
+     if (IsFbeEnabled()) {
+-        if (!prepare_dir(user_key_dir, 0700, AID_ROOT, AID_ROOT)) return false;
+-        if (!prepare_dir(user_key_dir + "/ce", 0700, AID_ROOT, AID_ROOT)) return false;
+-        if (!prepare_dir(user_key_dir + "/de", 0700, AID_ROOT, AID_ROOT)) return false;
+-
+-        // Create user 0's DE and CE keys if they don't already exist.  Check
+-        // each key independently, since if the first boot was interrupted it is
+-        // possible that the DE key exists but the CE key does not.
+-        if (!de_key_exists(0) && !create_de_key(0, false)) return false;
+-        if (!ce_key_exists(0) && !create_ce_key(0, false)) return false;
++        if (android::base::GetBoolProperty("ro.crypto.recovery_preserve_keys", false)) {
++            // 缺失或无法访问既有 user0 key 时直接失败，不创建 key 目录或替代密钥。
++            if (!de_key_exists(0) || !ce_key_exists(0)) {
++                LOG(ERROR) << "Recovery requires existing user 0 DE and CE keys";
++                return false;
++            }
++        } else {
++            if (!prepare_dir(user_key_dir, 0700, AID_ROOT, AID_ROOT)) return false;
++            if (!prepare_dir(user_key_dir + "/ce", 0700, AID_ROOT, AID_ROOT)) return false;
++            if (!prepare_dir(user_key_dir + "/de", 0700, AID_ROOT, AID_ROOT)) return false;
++
++            // Create user 0's DE and CE keys if they don't already exist.  Check
++            // each key independently, since if the first boot was interrupted it is
++            // possible that the DE key exists but the CE key does not.
++            if (!de_key_exists(0) && !create_de_key(0, false)) return false;
++            if (!ce_key_exists(0) && !create_ce_key(0, false)) return false;
++        }
+ 
+         // TODO: switch to loading only DE_0 here once framework makes
+         // explicit calls to install DE keys for secondary users

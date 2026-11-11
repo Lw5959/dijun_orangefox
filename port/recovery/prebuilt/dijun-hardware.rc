@@ -1,0 +1,21 @@
+service dijun-hardware /system/bin/sh /system/bin/start-dijun-hardware
+    user root
+    group root
+    seclabel u:r:recovery:s0
+    disabled
+    oneshot
+
+# 沿用原厂服务和波形处理；仅调整恢复环境需要的 UID/SELinux 域。
+# persist 沿用解密流程的只读挂载，不创建或改写原厂校准文件。
+service vibratorfeature-hal-service /odm/bin/hw/vendor.xring.hardware.vibratorfeature.service
+    class hal
+    user root
+    group root system input audio
+    seclabel u:r:recovery:s0
+    disabled
+
+on property:twrp.modules.loaded=true && property:twrp.crypto.boot_params.ready=true
+    start dijun-hardware
+
+on property:sys.powerctl=*
+    exec -- /system/bin/sh /system/bin/dijun-torch off

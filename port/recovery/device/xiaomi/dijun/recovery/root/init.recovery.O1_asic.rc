@@ -1,0 +1,13 @@
+# dijun / OS4 O1_asic 的实际 UDC 与原厂 ConfigFS 设置。
+# 上游 /system/etc/init/hw/init.rc 创建 g1、ADB/fastboot FunctionFS，并处理
+# ADB/fastboot/sideload；init.recovery.usb.rc 在同一 gadget 上补齐 MTP。
+# 本文件不加载未知模块，不启动 Android HAL，也不挂载或改写用户数据分区。
+on init
+    # 上游 on fs 直接 mount 到 /config，必须先有挂载点。
+    mkdir /config 0755 root root
+    setprop sys.usb.controller e1ac0000.dwc3
+    setprop sys.usb.configfs 1
+
+# 原厂 recovery 仅在 fastboot 切换时强制 device role；不扩展到其他模式。
+on property:sys.usb.config=fastboot
+    write /sys/bus/platform/devices/e1ac0000.xr_usb/force_role 2

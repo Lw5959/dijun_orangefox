@@ -1,0 +1,412 @@
+{
+  "records": [
+    {
+      "file": "dse.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/dse/dse.ko",
+      "original_relative_path": "extra/xring-modules/drivers/dse/dse.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 43016,
+      "sha256": "dceee1335178dd3c827b7d957dbd87dfc1420799134e692754fe5bbd415df2f3"
+    },
+    {
+      "file": "securelib.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/secure/securelib/securelib.ko",
+      "original_relative_path": "extra/xring-modules/secure/securelib/securelib.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 32672,
+      "sha256": "18f79978bd69109a447e07b1f8fdce059ad108eb5357698f20329bf41a3739d3"
+    },
+    {
+      "file": "xr_vote_mng.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/vote_mng/xr_vote_mng.ko",
+      "original_relative_path": "extra/xring-modules/drivers/vote_mng/xr_vote_mng.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 64320,
+      "sha256": "41148bd53ea8a249f650281b02ba11c240ab2e570826459303afdfa8b177e178"
+    },
+    {
+      "file": "xr_cpufreq.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/cpufreq/xr_cpufreq.ko",
+      "original_relative_path": "extra/xring-modules/drivers/cpufreq/xr_cpufreq.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 73400,
+      "sha256": "f2444881c64e9c128a450f4a0456a4ac3dd049b34dfad0103e4c3ace12221198"
+    },
+    {
+      "file": "perf-actuator.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/perf/perf_actuator/perf-actuator.ko",
+      "original_relative_path": "extra/xring-modules/drivers/perf/perf_actuator/perf-actuator.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 73360,
+      "sha256": "93c59c815684c88ef186a9fb000d2d8a16e18c6f4eafc918b8ade33a73238932"
+    },
+    {
+      "file": "os_cpu_plat_common.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_plat_common.ko",
+      "original_relative_path": "extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_plat_common.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 26176,
+      "sha256": "0bdc744f8450fc6c4e3e857ddf7338e425384583d55aef2af2091b0c5f4aa8d5"
+    },
+    {
+      "file": "os_cpu_vip_sched.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_vip_sched.ko",
+      "original_relative_path": "extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_vip_sched.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 99504,
+      "sha256": "a9fa67df5b83831b2682d85e9e16e4e77b4bea76cd02612f889475980b4aaa23"
+    },
+    {
+      "file": "xr_timestamp.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/timestamp/xr_timestamp.ko",
+      "original_relative_path": "extra/xring-modules/drivers/timestamp/xr_timestamp.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 26384,
+      "sha256": "87108e89aaf4b197d467e42f4d1ac3be5b080f0ae47220d09032e1b49d71e98b"
+    },
+    {
+      "file": "xr_doze.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/doze/xr_doze.ko",
+      "original_relative_path": "extra/xring-modules/drivers/doze/xr_doze.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 22440,
+      "sha256": "6cfea6653ef8eec6648c6406de2e0627ad93d4e34defe8d56e30be721c95c95d"
+    },
+    {
+      "file": "xr_ffa-module.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xr_arm_ffa/xr_ffa-module.ko",
+      "original_relative_path": "extra/xring-modules/drivers/xr_arm_ffa/xr_ffa-module.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 79656,
+      "sha256": "46b8d001122411d66da733fd0617763e925768937b2b72aee7e4868f95d54740"
+    },
+    {
+      "file": "xrsp_driver.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xsp/xsp1/xrsp_driver.ko",
+      "original_relative_path": "extra/xring-modules/drivers/xsp/xsp1/xrsp_driver.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 16736,
+      "sha256": "ef32075e47864b934a88a99f5866dfd86f45c59db306b813cecbb4598fbddc4e"
+    },
+    {
+      "file": "xr-pmic-spmi.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/pmic/xr-pmic-spmi.ko",
+      "original_relative_path": "extra/xring-modules/drivers/pmic/xr-pmic-spmi.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 26744,
+      "sha256": "a76bc952b52df6c63529a229f610adebb90e603a6b665de627f2fcf6217cff17"
+    },
+    {
+      "file": "xr-clk.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/clk/xr-clk.ko",
+      "original_relative_path": "extra/xring-modules/drivers/clk/xr-clk.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 294544,
+      "sha256": "efcf8fb619625b6ccd3414c711f37cbf79220fe60417aa93937a16e2f31a770d"
+    },
+    {
+      "file": "sched-walt.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/cpu_sched/walt/sched-walt.ko",
+      "original_relative_path": "extra/xring-modules/drivers/cpu_sched/walt/sched-walt.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 896904,
+      "sha256": "2153fe4a7053545f20a17d21cf1042cdf8d9213d75e310a0958c617868a7c30f"
+    },
+    {
+      "file": "xring_thermal.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/thermal/xring_thermal.ko",
+      "original_relative_path": "extra/xring-modules/drivers/thermal/xring_thermal.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 155936,
+      "sha256": "a72150b02648bfd0bf8c8cf83f68abe6daeca6cfa7304cd9869fd12829039723"
+    },
+    {
+      "file": "xr_ddr.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/ddr/xr_ddr.ko",
+      "original_relative_path": "extra/xring-modules/drivers/ddr/xr_ddr.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 82760,
+      "sha256": "ef7fdc1d3237d7cf3b4ae65c9497bb7708b1723cc147ea11b86bfe5d76ca3db1"
+    },
+    {
+      "file": "media-dvfs.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/clk/media-dvfs.ko",
+      "original_relative_path": "extra/xring-modules/drivers/clk/media-dvfs.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 38912,
+      "sha256": "c3781055af86856094f06b8522016330d79e05fe3aa7bf644c4afb5440c3e658"
+    },
+    {
+      "file": "mca_platform_buckchg_class.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_platform_buckchg_class.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_platform_buckchg_class.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 91152,
+      "sha256": "e274dbba8a94682dbd2b9c587ef4a9d85238a8afff32320447b95f324d7d2e19"
+    },
+    {
+      "file": "mca_protocol_class.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_protocol_class.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_protocol_class.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 21624,
+      "sha256": "cd49037f3fa0bcf070f0031f1eb8a7a6655efcc1c48c3a437eb8f25d15d92dd5"
+    },
+    {
+      "file": "mca_sysfs.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_sysfs.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_sysfs.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 34120,
+      "sha256": "de60f843008e5ed3539162509fef36e1800cb6b2b529ee790ff3f1c6061b44e0"
+    },
+    {
+      "file": "mca_event.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_event.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_event.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 21048,
+      "sha256": "49f303fecee7c69812a13e6ff356ebe229088622c76b64892663b8e57a302ee2"
+    },
+    {
+      "file": "mca_log.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_log.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_log.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 32504,
+      "sha256": "27802174ecb193d048bbf0e74baf739a17b33b41f8feb1131c961f821ae9972a"
+    },
+    {
+      "file": "mca_parse_dts.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_parse_dts.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_parse_dts.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 22088,
+      "sha256": "c126422b69020a25a2140d41f7141779f81273b764e7dc8fe445fcfe48664efd"
+    },
+    {
+      "file": "mca_protocol_pd_class.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_protocol_pd_class.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_protocol_pd_class.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 74560,
+      "sha256": "d2ed4b292f36169a9feab3e5614b032155aaf6d93b41c50e955b6edb400523f0"
+    },
+    {
+      "file": "external_tcpc.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/external_tcpc.ko",
+      "original_relative_path": "extra/xring-modules/mca/external_tcpc.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 558368,
+      "sha256": "78a767af8dea2e4f6f3c3d7c6e9a93e0e3fb46eede1df1888ce533bf70e294b9"
+    },
+    {
+      "file": "mca_workqueue.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_workqueue.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_workqueue.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 17296,
+      "sha256": "1b95d4637350eaeeb5eee2d09e674c33ac9ac16493e6a988b14041732704f8a7"
+    },
+    {
+      "file": "fsa4480-i2c.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/switch/fsa4480-i2c.ko",
+      "original_relative_path": "extra/xring-modules/switch/fsa4480-i2c.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 76504,
+      "sha256": "5faea8e0d96cf451f4eb8185d8c1ff206853b6c7f4c0e578b4223d30f1214e0f"
+    },
+    {
+      "file": "drm_display_helper.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/kernel/drivers/gpu/drm/display/drm_display_helper.ko",
+      "original_relative_path": "kernel/drivers/gpu/drm/display/drm_display_helper.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 319200,
+      "sha256": "1e01d73d8ea159a26a2441d5321b30999b265a7a4e67679b66f7ddacaafe3115"
+    },
+    {
+      "file": "xring_smmu.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xr_mem/smmu/xring_smmu.ko",
+      "original_relative_path": "extra/xring-modules/drivers/xr_mem/smmu/xring_smmu.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 196960,
+      "sha256": "a4160f70be8705dee0d6d23bae2a297686dbc2e42dc679e6ba20d49dbf88cdc4"
+    },
+    {
+      "file": "miev.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/miev/miev.ko",
+      "original_relative_path": "extra/xring-modules/drivers/miev/miev.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 37152,
+      "sha256": "e12ec5b03ad6c2aa21a50c5e5374e190567ee8760f2f86b42ed2a8a5ddac27f9"
+    },
+    {
+      "file": "xr_dfx.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/dfx/xr_dfx.ko",
+      "original_relative_path": "extra/xring-modules/drivers/dfx/xr_dfx.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 211008,
+      "sha256": "1d75cafcde5fb6eb6bddb693a01c8043c0b58c427d03390a267ab13ca714802f"
+    },
+    {
+      "file": "mitee.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/tee/mitee.ko",
+      "original_relative_path": "extra/xring-modules/drivers/tee/mitee.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 279352,
+      "sha256": "5a4e4d12e3c0e95a8c35166bafc65c8f4cf44df2ec53454e137abfc59bdb3a16"
+    },
+    {
+      "file": "xr_mem_s1.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xr_mem/xr_mem_s1.ko",
+      "original_relative_path": "extra/xring-modules/drivers/xr_mem/xr_mem_s1.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 575856,
+      "sha256": "19e213cb48af3cbc1658b2a59d08fb2ab3d46a7d437ffadee356bc94111c33c2"
+    },
+    {
+      "file": "redriver.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/mca/mca_hardware_ic/redriver/redriver.ko",
+      "original_relative_path": "extra/xring-modules/mca/mca_hardware_ic/redriver/redriver.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 24384,
+      "sha256": "b2b41d1de924a2f75dba09bacec15b85e5cf849dfa8fdfee1c201b729fc20d5d"
+    },
+    {
+      "file": "flowctrl.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/perf/flowctrl/flowctrl.ko",
+      "original_relative_path": "extra/xring-modules/drivers/perf/flowctrl/flowctrl.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 36544,
+      "sha256": "d95152faf515d443e30368de7d2d7c040769c03e242dbfd749cb8e801b1815e3"
+    },
+    {
+      "file": "xring_usb.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/usb/xring_usb.ko",
+      "original_relative_path": "extra/xring-modules/drivers/usb/xring_usb.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 162240,
+      "sha256": "762d35516b3c490cdbf5732e5aafd4273a6f19307fc1a66c7323e0b79f8a96d6"
+    },
+    {
+      "file": "dmd.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/dmd/dmd.ko",
+      "original_relative_path": "extra/xring-modules/drivers/dmd/dmd.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 26040,
+      "sha256": "b33861948194d2fc341efa43fa92f4043c63a26f0db5475f125974419c1a6101"
+    },
+    {
+      "file": "xr_pmic.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/pmic/xr_pmic.ko",
+      "original_relative_path": "extra/xring-modules/drivers/pmic/xr_pmic.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 129576,
+      "sha256": "3aaeea85387f9cd5e92bebfa569dde0745d236facf00239b97996453d395aba3"
+    },
+    {
+      "file": "xring-drm.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/display/dpu/xring-drm.ko",
+      "original_relative_path": "extra/xring-modules/drivers/display/dpu/xring-drm.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 6045144,
+      "sha256": "b906842c30c5242ea6147c6244a5e7675785e75ff0cde0178b19232c2cc8f790"
+    },
+    {
+      "file": "shub_boot_prepare.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_boot_prepare.ko",
+      "original_relative_path": "/vendor/lib/modules/shub_boot_prepare.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 85072,
+      "sha256": "d97148ef42c023e9d71970c9914592bbb1bdbdc25239eb9f66ebe96ac0c5c376"
+    },
+    {
+      "file": "xr_ipc.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/ipc/xr_ipc.ko",
+      "original_relative_path": "extra/xring-modules/drivers/ipc/xr_ipc.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 126912,
+      "sha256": "d247b391a3ea30240ea7ce85ddbe6ba75989c757dc35a02771388b4ba50c1e18"
+    },
+    {
+      "file": "shub_ipc_drv.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_ipc_drv.ko",
+      "original_relative_path": "/vendor/lib/modules/shub_ipc_drv.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 33800,
+      "sha256": "c9d06a9040da2be30c83c7666fd4d05a35b045e153c433af0f1efa6971a1cbd1"
+    },
+    {
+      "file": "xiaomi_touch_dijun.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xiaomi_touch_dijun.ko",
+      "original_relative_path": "/vendor/lib/modules/xiaomi_touch_dijun.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 233176,
+      "sha256": "0ecca676ca633b18b325f3e2aa6708f280937442ca63a929191c6dd09076d5ad"
+    },
+    {
+      "file": "xr_spi_mmio.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xr_spi_mmio.ko",
+      "original_relative_path": "/vendor/lib/modules/xr_spi_mmio.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 78680,
+      "sha256": "47b416238cad3ec91e1b0f88ec114306b471ef228f5959a4b11181459e3e6b02"
+    },
+    {
+      "file": "tui.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/tui.ko",
+      "original_relative_path": "/vendor/lib/modules/tui.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 63640,
+      "sha256": "a62578380d91dce251be2031363ab2c4917a44e7b913292061a986664d44f615"
+    },
+    {
+      "file": "synaptics_tcm2.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/synaptics_tcm2.ko",
+      "original_relative_path": "/vendor/lib/modules/synaptics_tcm2.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 595992,
+      "sha256": "dc2b7631bdac52d6c2152abb465aab7842e232da1bbf20958113b6c26d94b7bf"
+    },
+    {
+      "file": "xring_audio_hw_third.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xring_audio_hw_third.ko",
+      "original_relative_path": "/vendor/lib/modules/xring_audio_hw_third.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 5544832,
+      "sha256": "969a17203bf56c3d5b46e3a3ee1827cb3579aaa423c2fc21508e73d2548650f6"
+    },
+    {
+      "file": "shub_app_router.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_app_router.ko",
+      "original_relative_path": "/vendor/lib/modules/shub_app_router.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 83512,
+      "sha256": "a0462e191f4f3db30612d3e43fb39541cad78b57184ba9e35b8e88ba46e3768d"
+    },
+    {
+      "file": "xring-ocm.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/ocm/xring-ocm.ko",
+      "original_relative_path": "extra/xring-modules/drivers/ocm/xring-ocm.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 48840,
+      "sha256": "0fa9a84ed5d5fa0394a49216a947d8eab4f90e1512a986dfbfb49dfc8fa53ecb"
+    },
+    {
+      "file": "hwid.ko",
+      "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xiaomi-modules/hwid/hwid.ko",
+      "original_relative_path": "extra/xiaomi-modules/hwid/hwid.ko",
+      "source_kind": "vendor_boot",
+      "bytes": 23168,
+      "sha256": "b5a32c6c4c056b28f26e0a65a8bb163d0029b969fd535b7b1159c641c6965dba"
+    },
+    {
+      "file": "xr_isp.ko",
+      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xr_isp.ko",
+      "original_relative_path": "/vendor/lib/modules/xr_isp.ko",
+      "source_kind": "vendor_dlkm",
+      "bytes": 1085000,
+      "sha256": "995a83549fff11d89def900db8661d9289e66e53890fa58fb9b3f8c35d0d81d2"
+    }
+  ]
+}

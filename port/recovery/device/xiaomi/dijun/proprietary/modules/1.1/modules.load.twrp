@@ -1,0 +1,5 @@
+xring-drm.ko
+synaptics_tcm2.ko
+xiaomi_touch_dijun.ko
+xring_audio_hw_third.ko
+xr_isp.ko

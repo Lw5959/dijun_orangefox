@@ -1,0 +1,173 @@
+{
+  "firmware": "OS4.0.0.19.XODCNXM",
+  "files": [
+    {
+      "source": "/odm/bin/hw/vendor.xring.hardware.vibratorfeature.service",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/bin/hw/vendor.xring.hardware.vibratorfeature.service",
+      "sha256": "0eacb88e11a3402b1551b79cc85e3cfcbbd518c7da44684fc5354829e27be2e7",
+      "bytes": 220408
+    },
+    {
+      "source": "/vendor/lib64/libtinyalsa.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/lib64/libtinyalsa.so",
+      "sha256": "c5008f3a3e1257e0f4042331ebc6279ca04347d2027ac5be4d8b0ddee2350c7b",
+      "bytes": 68504
+    },
+    {
+      "source": "/vendor/lib64/android.hardware.vibrator-V1-ndk.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/lib64/android.hardware.vibrator-V1-ndk.so",
+      "sha256": "56e2ff15d128400986677f48557c3bf2d41c453cf6e4a5eb32b2899ad9585ce0",
+      "bytes": 85480
+    },
+    {
+      "source": "/vendor/lib64/libxml2.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/lib64/libxml2.so",
+      "sha256": "ed7047f9105ec28c116ae450c5718764b55ac87b7d4f007e373ec42fbda77f9b",
+      "bytes": 1225040
+    },
+    {
+      "source": "/vendor/lib64/libmisight.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/lib64/libmisight.so",
+      "sha256": "57585b46f34e5004f790f42015575b1e31bfbce51d83a3645a01a267bef09346",
+      "bytes": 36440
+    },
+    {
+      "source": "/vendor/lib64/libjsoncpp.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/lib64/libjsoncpp.so",
+      "sha256": "3a085ae5f0d1171e365b942c8a55af753a0f4e25ba8c64b5cca48d1f6ef31279",
+      "bytes": 200576
+    },
+    {
+      "source": "/vendor/lib64/vendor.hardware.vibratorfeature.IVibratorExt-V1-ndk.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/lib64/vendor.hardware.vibratorfeature.IVibratorExt-V1-ndk.so",
+      "sha256": "53ccbf2196cfa9c1b32b02fe91e1781ba6f35749250e67910367478fa89b22a2",
+      "bytes": 68880
+    },
+    {
+      "source": "/odm/lib64/libaachaptics.so",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/lib64/libaachaptics.so",
+      "sha256": "3f8bb19b8a739fcd37ca557c83b808a48417bc7a1a10be95c7306530b62e1221",
+      "bytes": 94296
+    },
+    {
+      "source": "/odm/etc/waveform_conf.xml",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/etc/waveform_conf.xml",
+      "sha256": "613ddef375105ec764c8c671bdf13118a42daca16807f216692db8b20b77862a",
+      "bytes": 1100
+    },
+    {
+      "source": "/odm/etc/vintf/manifest/vendor.xring.hardware.vibratorfeature.service.xml",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/etc/vintf/manifest/vendor.xring.hardware.vibratorfeature.service.xml",
+      "sha256": "9e93fcc3e4199722da4ec49c96cd52e05230520d8967147c091224c63fbee939",
+      "bytes": 392
+    },
+    {
+      "source": "/odm/firmware/cs40l26-a2h.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-a2h.bin",
+      "sha256": "9bc8fc6256fe4cc25582ef5a47b438a4d3efa4548301da60a4d010e219b9c785",
+      "bytes": 900
+    },
+    {
+      "source": "/odm/firmware/cs40l26-a2h1.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-a2h1.bin",
+      "sha256": "4d0d26bf6fb272cd6937a9f6b14ebe237310a01c794ea6c4d75a5eb5e5949c35",
+      "bytes": 904
+    },
+    {
+      "source": "/odm/firmware/cs40l26-calib.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-calib.bin",
+      "sha256": "d936817b1c5b8d7557f6e195276382a2c7ca496ff2a27ba93294de78c34eb1ee",
+      "bytes": 144
+    },
+    {
+      "source": "/odm/firmware/cs40l26-calib.wmfw",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-calib.wmfw",
+      "sha256": "a6d7bfaa64cbda0dd987ac44b9bff795e05212c25312ef95d6837a751936037b",
+      "bytes": 47904
+    },
+    {
+      "source": "/odm/firmware/cs40l26-dbc.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-dbc.bin",
+      "sha256": "7cbbafe6627604f5fba94b52c6014855aa5f88be79390fcfaaf58eaec08e216e",
+      "bytes": 148
+    },
+    {
+      "source": "/odm/firmware/cs40l26-dvl.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-dvl.bin",
+      "sha256": "de605bb3ff5d4e19427080bb99c5efd45eb7b8aa00a7a444ff386b43065b7b8d",
+      "bytes": 216
+    },
+    {
+      "source": "/odm/firmware/cs40l26-svc.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26-svc.bin",
+      "sha256": "aa206eaa4774caf6d8d16d8116a3f4e115a6da1ad6adc51f9f60c2713aa05977",
+      "bytes": 1168
+    },
+    {
+      "source": "/odm/firmware/cs40l26.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26.bin",
+      "sha256": "4516b191b3daafbf40a591e6f1ef9bd98fb6045a817bee366becaba460ef685b",
+      "bytes": 8432
+    },
+    {
+      "source": "/odm/firmware/cs40l26.wmfw",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/odm/firmware/cs40l26.wmfw",
+      "sha256": "8542109d6a0f95bcdd72b9bca97e7d450428b9ad3c48c2af1978e256901f24f5",
+      "bytes": 57264
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-a2h.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-a2h.bin",
+      "sha256": "89c1b52488fba561c5c5366fefa0cc64c5223b3d5d1d272c15730af626f199a2",
+      "bytes": 896
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-a2h1.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-a2h1.bin",
+      "sha256": "4d0d26bf6fb272cd6937a9f6b14ebe237310a01c794ea6c4d75a5eb5e5949c35",
+      "bytes": 904
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-calib.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-calib.bin",
+      "sha256": "d936817b1c5b8d7557f6e195276382a2c7ca496ff2a27ba93294de78c34eb1ee",
+      "bytes": 144
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-calib.wmfw",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-calib.wmfw",
+      "sha256": "a6d7bfaa64cbda0dd987ac44b9bff795e05212c25312ef95d6837a751936037b",
+      "bytes": 47904
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-dbc.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-dbc.bin",
+      "sha256": "a787154889cf738512e30c0787f156b04a45d46d6a5a3c19a81f568b901b9435",
+      "bytes": 148
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-dvl.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-dvl.bin",
+      "sha256": "de605bb3ff5d4e19427080bb99c5efd45eb7b8aa00a7a444ff386b43065b7b8d",
+      "bytes": 216
+    },
+    {
+      "source": "/vendor/firmware/cs40l26-svc.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26-svc.bin",
+      "sha256": "aa206eaa4774caf6d8d16d8116a3f4e115a6da1ad6adc51f9f60c2713aa05977",
+      "bytes": 1168
+    },
+    {
+      "source": "/vendor/firmware/cs40l26.bin",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26.bin",
+      "sha256": "4516b191b3daafbf40a591e6f1ef9bd98fb6045a817bee366becaba460ef685b",
+      "bytes": 8432
+    },
+    {
+      "source": "/vendor/firmware/cs40l26.wmfw",
+      "packaged": "recovery/device/xiaomi/dijun/proprietary/hardware/vendor/firmware/cs40l26.wmfw",
+      "sha256": "8542109d6a0f95bcdd72b9bca97e7d450428b9ad3c48c2af1978e256901f24f5",
+      "bytes": 57264
+    }
+  ]
+}

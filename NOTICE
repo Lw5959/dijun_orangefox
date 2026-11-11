@@ -1,0 +1,11 @@
+OrangeFox for Dijun
+Module maintainer: Lw59
+Module attribution: OrangeFox Team & Lw59
+
+Module scripts and original adaptation code: GPL-3.0-or-later.
+OrangeFox Recovery: Copyright OrangeFox Recovery Team and Team Win;
+upstream licensing and notices remain applicable.
+Android platform tools and other upstream files retain their existing notices.
+
+Factory firmware, kernel modules and vendor HAL binaries are external build
+inputs. They are not relicensed under this repository's GPL license.

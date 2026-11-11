@@ -1,0 +1,8 @@
+{
+  "firmware": "OS4.0.0.19.XODCNXM",
+  "source": "/odm/firmware/synaptics_spi_dijun.img",
+  "file": "synaptics_spi_dijun.img",
+  "bytes": 194794,
+  "sha256": "edaa698e65a41d165d87ceec13559f41232c0d9c42ce09e326fe2a5678928fee",
+  "runtime_install_path": "/lib/firmware/synaptics_spi_dijun.img"
+}
