@@ -6,7 +6,7 @@
 
 - 模块 ID：`dijun_orangefox`
 - 作者：`OrangeFox Team & Lw59`
-- [下载模块](https://github.com/Lw5959/dijun_orangefox/releases/latest)
+- [下载模块](https://github.com/Lw5959/dijun_orangefox/releases)
 - [Recovery 适配源码与构建方法](port/README.md)
 
 ## 安装和使用

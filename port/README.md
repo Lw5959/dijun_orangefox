@@ -47,6 +47,10 @@ python3 tools/recovery/build_prebuilt_crypto.py
 
 构建报告位于 `build/recovery/prebuilt-crypto/`，ELF/init 检查读取实际 ramdisk。`recovery/prebuilt/sepolicy-firmware-load` 是固定 donor 策略的修正版，其原件/结果哈希和仅有的语义变化记录在 `firmware-policy.json`；它允许 `kernel` 对 `vendor_file` 加载 firmware，保留其他权限及未知权限拒绝行为。
 
+策略修改源码为 `tools/recovery/patch_firmware_policy.c`，使用 libsepol 3.5；仓库保留已核对的策略产物，因此精简构建无需重新安装该库。显示基础包根据 DRM/触控入口与真实 `modules.dep` 计算加载闭包，新增振动/ISP 模块保留在最终硬件服务中加载，避免改变已经验收的启动顺序。
+
+已在 macOS 按以上独立目录完成原厂输入准备、DRM 编译、17 项实际 AArch64 分支检查及最终镜像构建。重建的 100 MiB 镜像 SHA256 为 `e0af4e1c994da54138e154978a3885a18787368a084e543627c15c052ed22488`，与已验收设备中的发布镜像逐字节一致。ELF/init 检查无依赖或服务入口失败。源码检查另已通过 GitHub Actions。
+
 返回模块仓库根目录，将重建镜像和原厂镜像交给 `tools/build_module.py` 打包。只有镜像与已验证发布版本的完整哈希一致，才会生成该版模块；有意修改源码后，需要重新进行版本核验并更新 `config/images.json`。
 
 ## 改动与验收边界
