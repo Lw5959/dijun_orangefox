@@ -15,6 +15,7 @@ STOCK = b"stock-recovery!!"
 FOX = b"orangefox-image!"
 OTHER = b"thirdparty-img!!"
 OLD_FOX = b"orangefox-old!!!"
+OLD_STOCK = b"old-recovery!!!!"
 
 
 class ModuleFlowTest(unittest.TestCase):
@@ -28,7 +29,7 @@ class ModuleFlowTest(unittest.TestCase):
         (self.path / "orangefox.img").write_bytes(FOX)
         (self.path / "stock-recovery.img").write_bytes(STOCK)
         (self.path / "images.env").write_text(
-            f"FIRMWARE=OS4.0.0.19.XODCNXM\nIMAGE_BYTES={len(STOCK)}\n"
+            f"FIRMWARE=OS4.0.4.0.XODCNXM\nIMAGE_BYTES={len(STOCK)}\n"
             f"FOX_SHA256={hashlib.sha256(FOX).hexdigest()}\n"
             f"STOCK_SHA256={hashlib.sha256(STOCK).hexdigest()}\n")
 
@@ -42,7 +43,7 @@ id() { echo 0; }
 getprop() {
     case "$1" in
         ro.product.device) echo "${SIM_PRODUCT:-dijun}";;
-        ro.build.version.incremental) echo "${SIM_FIRMWARE:-OS4.0.0.19.XODCNXM}";;
+        ro.build.version.incremental) echo "${SIM_FIRMWARE:-OS4.0.4.0.XODCNXM}";;
         ro.boot.slot_suffix) echo "${SIM_PROP_SLOT:-${SIM_SLOT:-_b}}";;
     esac
 }
@@ -144,15 +145,16 @@ dd() {
         self.assertNotEqual(self.run_flow("install_recovery").returncode, 0)
         self.no_writes()
 
-    def previous_install(self, slot="_b"):
+    def previous_install(self, slot="_b", stock=STOCK):
         previous = self.path / "previous"
         previous.mkdir()
         (previous / "installed-slot").write_text(slot + "\n")
         (previous / "orangefox.img").write_bytes(OLD_FOX)
+        (previous / "stock-recovery.img").write_bytes(stock)
         (previous / "images.env").write_text(
             f"FOX_SHA256={hashlib.sha256(OLD_FOX).hexdigest()}\n"
-            f"STOCK_SHA256={hashlib.sha256(STOCK).hexdigest()}\n")
-        self.partition.write_bytes(OLD_FOX)
+            f"STOCK_SHA256={hashlib.sha256(stock).hexdigest()}\n")
+        (self.path / ("partition" + slot)).write_bytes(OLD_FOX)
         return previous
 
     def test_upgrade_from_verified_previous_image(self):
@@ -176,10 +178,76 @@ dd() {
         self.no_writes()
         self.assertEqual(self.partition.read_bytes(), OLD_FOX)
 
-    def test_upgrade_does_not_abandon_other_slot(self):
-        self.previous_install("_a")
+    def test_ota_upgrade_preserves_and_restores_each_slots_own_firmware(self):
+        self.previous_install("_a", stock=OLD_STOCK)
+        result = self.run_flow("install_recovery")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.partition.read_bytes(), FOX)
+        self.assertEqual((self.path / "partition_a").read_bytes(), OLD_FOX)
+        self.assertEqual((self.path / "previous-slot/stock-recovery.img").read_bytes(), OLD_STOCK)
+        self.assertEqual((self.path / "previous-slot/installed-slot").read_text(), "_a\n")
+        result = self.run_flow("restore_recovery", SIM_FIRMWARE="a-later-ota")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.partition.read_bytes(), STOCK)
+        self.assertEqual((self.path / "partition_a").read_bytes(), OLD_STOCK)
+
+    def test_ota_upgrade_requires_new_stock_on_current_slot(self):
+        self.previous_install("_a", stock=OLD_STOCK)
+        self.partition.write_bytes(OTHER)
         self.assertNotEqual(self.run_flow("install_recovery").returncode, 0)
         self.no_writes()
+
+    def test_repeat_ota_install_before_module_activation_does_not_write_again(self):
+        self.previous_install("_a", stock=OLD_STOCK)
+        result = self.run_flow("install_recovery && install_recovery")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.path / "writes").read_text().splitlines(), ["orangefox.img"])
+        self.assertEqual((self.path / "previous-slot/stock-recovery.img").read_bytes(), OLD_STOCK)
+        self.assertEqual((self.path / "partition_a").read_bytes(), OLD_FOX)
+
+    def test_ota_upgrade_rejects_corrupt_old_stock_before_writing(self):
+        previous = self.previous_install("_a", stock=OLD_STOCK)
+        (previous / "stock-recovery.img").write_bytes(OTHER)
+        self.assertNotEqual(self.run_flow("install_recovery").returncode, 0)
+        self.no_writes()
+        self.assertEqual((self.path / "partition_a").read_bytes(), OLD_FOX)
+
+    def test_restore_after_ota_preserves_changed_old_slot(self):
+        self.previous_install("_a", stock=OLD_STOCK)
+        self.assertEqual(self.run_flow("install_recovery").returncode, 0)
+        (self.path / "partition_a").write_bytes(OTHER)
+        result = self.run_flow("restore_recovery")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(self.partition.read_bytes(), STOCK)
+        self.assertEqual((self.path / "partition_a").read_bytes(), OTHER)
+
+    def test_module_upgrade_keeps_previous_slot_backup(self):
+        previous = self.previous_install()
+        backup = previous / "previous-slot"
+        backup.mkdir()
+        (backup / "installed-slot").write_text("_a\n")
+        (backup / "stock-recovery.img").write_bytes(OLD_STOCK)
+        (backup / "images.env").write_text(
+            f"FOX_SHA256={hashlib.sha256(OLD_FOX).hexdigest()}\n"
+            f"STOCK_SHA256={hashlib.sha256(OLD_STOCK).hexdigest()}\n")
+        (self.path / "partition_a").write_bytes(OLD_FOX)
+        result = self.run_flow("install_recovery && restore_recovery")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.path / "partition_a").read_bytes(), OLD_STOCK)
+
+    def test_failed_ota_install_leaves_previous_slot_and_backup_intact(self):
+        previous = self.previous_install("_a", stock=OLD_STOCK)
+        result = self.run_flow("install_recovery", SIM_FAIL="fox")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(self.partition.read_bytes(), STOCK)
+        self.assertEqual((self.path / "partition_a").read_bytes(), OLD_FOX)
+        self.assertEqual((previous / "stock-recovery.img").read_bytes(), OLD_STOCK)
+
+    def test_restore_allows_recorded_image_after_firmware_changes(self):
+        self.assertEqual(self.run_flow("install_recovery").returncode, 0)
+        result = self.run_flow("restore_recovery", SIM_FIRMWARE="a-later-ota")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.partition.read_bytes(), STOCK)
 
 
 if __name__ == "__main__":

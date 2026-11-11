@@ -20,7 +20,7 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/crypto/vendor/bin/tee-supplicant",
     "source": "/vendor/bin/tee-supplicant",
     "kind": "firmware",
-    "sha256": "58fc15fa80a34d149cb8b4b5b9c8c6dc54c647800b25c49e716943cbf0d9f513",
+    "sha256": "a02aa53596410f5f87f905fa7da80d9314b1584a851f36ee0a56610b7c2d99d1",
     "bytes": 363936
   },
   {
@@ -548,8 +548,8 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/os_cpu_vip_sched.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_vip_sched.ko",
     "kind": "vendor_boot",
-    "sha256": "a9fa67df5b83831b2682d85e9e16e4e77b4bea76cd02612f889475980b4aaa23",
-    "bytes": 99504
+    "sha256": "ba2cffca197f7d807411d3e0bddebd7aec78c2e7cbb4615b55afce5fedf3211f",
+    "bytes": 100008
   },
   {
     "prepared": "modules/1.1/xr_timestamp.ko",
@@ -620,8 +620,8 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xr_ddr.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/ddr/xr_ddr.ko",
     "kind": "vendor_boot",
-    "sha256": "ef7fdc1d3237d7cf3b4ae65c9497bb7708b1723cc147ea11b86bfe5d76ca3db1",
-    "bytes": 82760
+    "sha256": "8c462e70ee3614486c36b7c85a3a3be843c5bb8c3412b6591078d9acf26894cc",
+    "bytes": 65544
   },
   {
     "prepared": "modules/1.1/media-dvfs.ko",
@@ -716,7 +716,7 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/drm_display_helper.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/kernel/drivers/gpu/drm/display/drm_display_helper.ko",
     "kind": "vendor_boot",
-    "sha256": "1e01d73d8ea159a26a2441d5321b30999b265a7a4e67679b66f7ddacaafe3115",
+    "sha256": "d5ed6529338913ad4de1fae970540a068b010874d75b6c6b5c0189d8f78e24fd",
     "bytes": 319200
   },
   {
@@ -724,7 +724,7 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xring_smmu.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xr_mem/smmu/xring_smmu.ko",
     "kind": "vendor_boot",
-    "sha256": "a4160f70be8705dee0d6d23bae2a297686dbc2e42dc679e6ba20d49dbf88cdc4",
+    "sha256": "f343277882efb80b9e2f91eceac2cea9db75cec2f69fbe6d9bc939b9d6c262f4",
     "bytes": 196960
   },
   {
@@ -748,16 +748,16 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/mitee.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/tee/mitee.ko",
     "kind": "vendor_boot",
-    "sha256": "5a4e4d12e3c0e95a8c35166bafc65c8f4cf44df2ec53454e137abfc59bdb3a16",
-    "bytes": 279352
+    "sha256": "63f11376b8a6bbebd19a08f6b9b1f34ac3f4ed9a4a98546cee5ea7e039b4faf5",
+    "bytes": 288432
   },
   {
     "prepared": "modules/1.1/xr_mem_s1.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xr_mem_s1.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xr_mem/xr_mem_s1.ko",
     "kind": "vendor_boot",
-    "sha256": "19e213cb48af3cbc1658b2a59d08fb2ab3d46a7d437ffadee356bc94111c33c2",
-    "bytes": 575856
+    "sha256": "bda9ce61e89510bea32bf9494efde9300f797ad2a1373b78f81fe5a481e31889",
+    "bytes": 580240
   },
   {
     "prepared": "modules/1.1/redriver.ko",
@@ -796,21 +796,21 @@
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xr_pmic.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/pmic/xr_pmic.ko",
     "kind": "vendor_boot",
-    "sha256": "3aaeea85387f9cd5e92bebfa569dde0745d236facf00239b97996453d395aba3",
-    "bytes": 129576
+    "sha256": "bbb8d9eaa4746899327b18b9ac3de392979c14dcab43df157782d6c7cc669deb",
+    "bytes": 129552
   },
   {
     "prepared": "modules/1.1/xring-drm.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xring-drm.ko",
     "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/display/dpu/xring-drm.ko",
     "kind": "vendor_boot",
-    "sha256": "b906842c30c5242ea6147c6244a5e7675785e75ff0cde0178b19232c2cc8f790",
-    "bytes": 6045144
+    "sha256": "7a0014feaf4868edcfef31dec9c6f68bce21ccb616179ed5a2812c204b2b1913",
+    "bytes": 6044688
   },
   {
     "prepared": "modules/1.1/shub_boot_prepare.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/shub_boot_prepare.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_boot_prepare.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/shub_boot_prepare.ko",
     "kind": "vendor_dlkm",
     "sha256": "d97148ef42c023e9d71970c9914592bbb1bdbdc25239eb9f66ebe96ac0c5c376",
     "bytes": 85072
@@ -826,7 +826,7 @@
   {
     "prepared": "modules/1.1/shub_ipc_drv.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/shub_ipc_drv.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_ipc_drv.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/shub_ipc_drv.ko",
     "kind": "vendor_dlkm",
     "sha256": "c9d06a9040da2be30c83c7666fd4d05a35b045e153c433af0f1efa6971a1cbd1",
     "bytes": 33800
@@ -834,7 +834,7 @@
   {
     "prepared": "modules/1.1/xiaomi_touch_dijun.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xiaomi_touch_dijun.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xiaomi_touch_dijun.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xiaomi_touch_dijun.ko",
     "kind": "vendor_dlkm",
     "sha256": "0ecca676ca633b18b325f3e2aa6708f280937442ca63a929191c6dd09076d5ad",
     "bytes": 233176
@@ -842,7 +842,7 @@
   {
     "prepared": "modules/1.1/xr_spi_mmio.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xr_spi_mmio.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xr_spi_mmio.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xr_spi_mmio.ko",
     "kind": "vendor_dlkm",
     "sha256": "47b416238cad3ec91e1b0f88ec114306b471ef228f5959a4b11181459e3e6b02",
     "bytes": 78680
@@ -850,7 +850,7 @@
   {
     "prepared": "modules/1.1/tui.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/tui.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/tui.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/tui.ko",
     "kind": "vendor_dlkm",
     "sha256": "a62578380d91dce251be2031363ab2c4917a44e7b913292061a986664d44f615",
     "bytes": 63640
@@ -858,15 +858,15 @@
   {
     "prepared": "modules/1.1/synaptics_tcm2.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/synaptics_tcm2.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/synaptics_tcm2.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/synaptics_tcm2.ko",
     "kind": "vendor_dlkm",
-    "sha256": "dc2b7631bdac52d6c2152abb465aab7842e232da1bbf20958113b6c26d94b7bf",
-    "bytes": 595992
+    "sha256": "8fecca0cfad0cdef274356a28dc3f06ee9f8025ba244d313ee9bf8d1f58ffc3f",
+    "bytes": 599184
   },
   {
     "prepared": "modules/1.1/xring_audio_hw_third.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xring_audio_hw_third.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xring_audio_hw_third.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xring_audio_hw_third.ko",
     "kind": "vendor_dlkm",
     "sha256": "969a17203bf56c3d5b46e3a3ee1827cb3579aaa423c2fc21508e73d2548650f6",
     "bytes": 5544832
@@ -874,7 +874,7 @@
   {
     "prepared": "modules/1.1/shub_app_router.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/shub_app_router.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_app_router.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/shub_app_router.ko",
     "kind": "vendor_dlkm",
     "sha256": "a0462e191f4f3db30612d3e43fb39541cad78b57184ba9e35b8e88ba46e3768d",
     "bytes": 83512
@@ -898,7 +898,7 @@
   {
     "prepared": "modules/1.1/xr_isp.ko",
     "destination": "recovery/device/xiaomi/dijun/proprietary/modules/1.1/xr_isp.ko",
-    "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xr_isp.ko",
+    "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xr_isp.ko",
     "kind": "vendor_dlkm",
     "sha256": "995a83549fff11d89def900db8661d9289e66e53890fa58fb9b3f8c35d0d81d2",
     "bytes": 1085000

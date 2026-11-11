@@ -1,6 +1,6 @@
 #!/system/bin/sh
 # 从已安装系统的 EROFS 镜像读取 KeyMint 参数；不使用 donor 的版本或预置 configured 状态。
-# 本入口匹配 OS4.0.0.19 的 system/vendor 布局，不调用任何安全 HAL。
+# 本入口匹配 OS4.0.4.0 的 system/vendor 布局，不调用任何安全 HAL。
 exec >>/tmp/dijun-crypto-params.log 2>&1
 setprop twrp.crypto.boot_params.ready false
 system_mounted=0
@@ -34,9 +34,13 @@ vendor_mounted=1
 release=$(sed -n 's/^ro.build.version.release=//p' "$base/system/system/build.prop")
 patch=$(sed -n 's/^ro.build.version.security_patch=//p' "$base/system/system/build.prop")
 vendor_patch=$(sed -n 's/^ro.vendor.build.security_patch=//p' "$base/vendor/build.prop")
-# 此镜像和原厂模块固定匹配 OS4.0.0.19。若读到旧快照或其他固件，停止而不配置 TEE。
-if [ "$release" != 17 ] || [ "$patch" != 2026-09-01 ] || [ "$vendor_patch" != 2026-09-01 ]; then
-    echo '原系统参数与本候选匹配的 OS4.0.0.19 不一致'
+system_build=$(sed -n 's/^ro.build.version.incremental=//p' "$base/system/system/build.prop")
+vendor_build=$(sed -n 's/^ro.vendor.build.version.incremental=//p' "$base/vendor/build.prop")
+# 新版 system 的 SPL 为十月，vendor 仍为九月；分别核对，避免把同一补丁日期传给两者。
+# 同时核对原厂内部构建号，阻止同 SPL 的旧快照或其他固件配置 TEE。
+if [ "$release" != 17 ] || [ "$patch" != 2026-10-01 ] || [ "$vendor_patch" != 2026-09-01 ] ||
+   [ "$system_build" != 17OS4.0.261106.161950561.XRPECN.S ] || [ "$vendor_build" != OS4.0.3.1.XODCN ]; then
+    echo '原系统参数与本候选匹配的 OS4.0.4.0 不一致'
     exit 1
 fi
 

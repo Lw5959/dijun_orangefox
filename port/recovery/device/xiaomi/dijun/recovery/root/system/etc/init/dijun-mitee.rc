@@ -1,4 +1,4 @@
-# 来源：当前 OS4.0.0.19 的三个原厂 MiTEE/Gatekeeper/KeyMint rc。
+# 来源：dijun 原厂 MiTEE/Gatekeeper/KeyMint rc；已核对 OS4.0.4.0 的服务入口。
 # 保留原服务名、可执行路径、class、UID/GID、参数和 capabilities。
 # 使用 OrangeFox 原有 recovery SELinux domain；不引入 Android 厂商专用新 domain。
 # disabled 仅避免 class_start 抢先启动，原生模块加载完成属性随后显式启动它们。

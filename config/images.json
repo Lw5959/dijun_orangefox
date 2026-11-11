@@ -1,8 +1,8 @@
 {
-  "firmware": "OS4.0.0.19.XODCNXM",
+  "firmware": "OS4.0.4.0.XODCNXM",
   "image_bytes": 104857600,
-  "orangefox_sha256": "e0af4e1c994da54138e154978a3885a18787368a084e543627c15c052ed22488",
-  "stock_sha256": "3bbd522941c598e366c26e5231ca76eed037d6278a985deb2fe52397b55db17e",
+  "orangefox_sha256": "4f3caf55bc27d7311c58fa1361c54e8056335bb55db4bac281a8ca8940915fd5",
+  "stock_sha256": "6b09247cea7869b66b383009a28b77160c42afb0be90d6c143eca2d7c253b629",
   "validation": {
     "cold_boot": true,
     "chinese_ui": true,
@@ -11,7 +11,10 @@
     "brightness": true,
     "existing_userdata_decryption": true,
     "ksu_upgrade": true,
-    "a_slot_hardware_tested": false,
-    "full_backup_restore_ota_tested": false
+    "ota_slot_migration_hardware_tested": false,
+    "a_slot_hardware_tested": true,
+    "full_backup_restore_ota_tested": false,
+    "ce_read_write_roundtrip": true,
+    "ota_slot_install_and_backup_preserved": true
   }
 }

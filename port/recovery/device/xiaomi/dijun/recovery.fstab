@@ -1,4 +1,4 @@
-# dijun / OS4.0.0.19：Android v2 fstab。不要固化当前 dm 编号或当前槽。
+# dijun / OS4.0.4.0：Android v2 fstab。不要固化当前 dm 编号或当前槽。
 # logical 分区只读挂载；保留原厂可用的 erofs/ext4 双条目。
 system          /system_root    erofs   ro                              wait,slotselect,logical
 system          /system_root    ext4    ro,barrier=1                    wait,slotselect,logical

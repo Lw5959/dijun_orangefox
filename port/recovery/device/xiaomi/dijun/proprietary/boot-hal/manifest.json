@@ -1,5 +1,5 @@
 {
-  "firmware": "OS4.0.0.19.XODCNXM",
+  "firmware": "OS4.0.4.0.XODCNXM",
   "files": [
     {
       "source": "build/recovery/stock/recovery_b/ramdisk-00/root/system/bin/hw/android.hardware.boot-service.xring.recovery",

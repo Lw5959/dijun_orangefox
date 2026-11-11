@@ -1,5 +1,5 @@
 {
-  "firmware": "OS4.0.0.19.XODCNXM",
+  "firmware": "OS4.0.4.0.XODCNXM",
   "files": [
     {
       "source": "/vendor/bin/hw/android.hardware.gatekeeper-service.mitee",
@@ -16,7 +16,7 @@
     {
       "source": "/vendor/bin/tee-supplicant",
       "packaged": "recovery/device/xiaomi/dijun/proprietary/crypto/vendor/bin/tee-supplicant",
-      "sha256": "58fc15fa80a34d149cb8b4b5b9c8c6dc54c647800b25c49e716943cbf0d9f513",
+      "sha256": "a02aa53596410f5f87f905fa7da80d9314b1584a851f36ee0a56610b7c2d99d1",
       "bytes": 363936
     },
     {

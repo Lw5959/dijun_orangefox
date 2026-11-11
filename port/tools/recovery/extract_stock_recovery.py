@@ -289,15 +289,15 @@ def dependencies(directory):
 
 
 def extract(args):
-    manifest = json.loads((args.inputs / "manifest.json").read_text())
-    if manifest.get("product") != "dijun" or manifest.get("firmware") != "OS4.0.0.19.XODCNXM" or manifest.get("original_slot") != "_b":
-        raise ValueError("输入归属不匹配 dijun OS4.0.0.19 原 _b")
-    images = [(item["partition"], args.inputs / item["file"], item["sha256"], item["bytes"]) for item in manifest["partitions"]]
-    boot_manifest_path = ROOT / "artifacts/device-trial/restore/manifest.json"
-    boot_manifest = json.loads(boot_manifest_path.read_text())
-    images.append(("boot_b", boot_manifest_path.parent / "boot_b.img", boot_manifest["sha256"], boot_manifest["partition_bytes"]))
+    manifest_path = ROOT / "config/build-inputs.json"
+    manifest = json.loads(manifest_path.read_text())
+    # OTA 原件不带槽位归属；沿用现有解包目录名供构建消费，不据此选择设备分区。
+    # 公开构建只需 Recovery/vendor_boot，不依赖私有真机 boot 备份及其安装记录。
+    images = [(name.removesuffix(".img"), args.inputs / Path(item["file"]).name,
+               item["sha256"], item["bytes"]) for name, item in manifest["stock"].items()]
     args.output.mkdir(parents=True, exist_ok=False)
-    report = {"schema": "dijun-stock-recovery-layout-v1", "input_manifest": str((args.inputs / "manifest.json").relative_to(ROOT)),
+    report = {"schema": "dijun-stock-recovery-layout-v1", "input_manifest": str(manifest_path.relative_to(ROOT)),
+              "firmware": manifest["firmware"],
               "boot_header_reference": BOOT_HEADER_REFERENCE, "avb_reference": AVB_REFERENCE,
               "reference_source_blobs": {"bootimg.h": "06ac30ad1044452be73946f15f092bf9bea358a3", "avbtool.py": "595936c88d24b6e571b303a23a0e7cfe2e185bc7"},
               "phone_operations": False, "images": {}, "hardware_tested": False}
@@ -327,7 +327,7 @@ def extract(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--inputs", type=Path, default=ROOT / "inputs/recovery/os4-0-0-19")
+    parser.add_argument("--inputs", type=Path, default=ROOT / "inputs/recovery/os4-0-4-0")
     parser.add_argument("--output", type=Path, default=ROOT / "build/recovery/stock")
     args = parser.parse_args()
     try:

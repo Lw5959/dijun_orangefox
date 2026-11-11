@@ -203,7 +203,7 @@ def assemble(library):
     # 固定为此备份对应系统的真实版本；SDK 保留 donor ABI 34，不谎报其用户空间 ABI。
     prop = payloads["prop.default"].decode()
     replacements = {"ro.build.version.release": "17", "ro.build.version.release_or_codename": "17",
-                    "ro.build.version.security_patch": "2026-09-01", "ro.vendor.build.security_patch": "2026-09-01",
+                    "ro.build.version.security_patch": "2026-10-01", "ro.vendor.build.security_patch": "2026-09-01",
                     "ro.product.board": "O1", "ro.board.platform": "O1_asic"}
     for key, value in replacements.items():
         prop = re.sub(r"^" + re.escape(key) + r"=.*$", key + "=" + value, prop, flags=re.M)
@@ -238,10 +238,12 @@ def main():
     struct.pack_into("<I", header, 40, 4)
     image = ROOT / "build/recovery/OrangeFox-dijun-display-trial-zh.img"
     image.write_bytes(header + compressed + b"\0" * (-len(compressed) % 4096))
-    fingerprint = next(x["value"] for x in avb_info((ROOT / "inputs/recovery/os4-0-0-19/recovery_b.img").read_bytes())["descriptors"] if x.get("key") == "com.android.build.recovery.fingerprint")
+    original = avb_info((ROOT / "inputs/recovery/os4-0-4-0/recovery.img").read_bytes())
+    fingerprint = next(x["value"] for x in original["descriptors"] if x.get("key") == "com.android.build.recovery.fingerprint")
     run([sys.executable, ROOT / "sources/orangefox/component-tools/avbtool.py", "add_hash_footer",
          "--image", image, "--partition_name", "recovery", "--partition_size", "104857600",
-         "--algorithm", "NONE", "--rollback_index", "1788220800", "--rollback_index_location", "11",
+         "--algorithm", "NONE", "--rollback_index", str(original["rollback_index"]),
+         "--rollback_index_location", str(original["rollback_index_location"]),
          "--salt", "c4cbfdb2ca989e645b7404af41d94a001c371a73ec338616b31f1b5c690fb36d",
          "--prop", "com.android.build.recovery.fingerprint:" + fingerprint])
     # 回读实际最终镜像，供已有 ELF/init 审计及真机采集使用。

@@ -19,7 +19,7 @@ python3 -m venv .venv
 python3 -m pip install -r recovery/requirements-tests.txt
 ```
 
-原厂输入仅接受 `OS4.0.0.19.XODCNXM`，文件名、大小和哈希见 `config/build-inputs.json`、`config/proprietary-files.json`。通用用户空间来源见 [OrangeFox 发布页](https://orangefox.download/release/69f78ad93ba4241a6c1e09a9)，该 donor 镜像不能直接刷入 dijun。
+原厂输入仅接受 `OS4.0.4.0.XODCNXM`，文件名、大小和哈希见 `config/build-inputs.json`、`config/proprietary-files.json`。通用用户空间来源见 [OrangeFox 发布页](https://orangefox.download/release/69f78ad93ba4241a6c1e09a9)，该 donor 镜像不能直接刷入 dijun。
 
 ## 准备原厂输入
 
@@ -49,9 +49,9 @@ python3 tools/recovery/build_prebuilt_crypto.py
 
 策略修改源码为 `tools/recovery/patch_firmware_policy.c`，使用 libsepol 3.5；仓库保留已核对的策略产物，因此精简构建无需重新安装该库。显示基础包根据 DRM/触控入口与真实 `modules.dep` 计算加载闭包，新增振动/ISP 模块保留在最终硬件服务中加载，避免改变已经验收的启动顺序。
 
-已在 macOS 按以上独立目录完成原厂输入准备、DRM 编译、17 项实际 AArch64 分支检查及最终镜像构建。重建的 100 MiB 镜像 SHA256 为 `e0af4e1c994da54138e154978a3885a18787368a084e543627c15c052ed22488`，与已验收设备中的发布镜像逐字节一致。ELF/init 检查无依赖或服务入口失败。源码检查另已通过 GitHub Actions。
+已在 macOS 完成 OS4.0.4.0 原厂输入准备、DRM 编译、17 项实际 AArch64 分支检查及最终镜像构建。100 MiB 镜像 SHA256 为 `4f3caf55bc27d7311c58fa1361c54e8056335bb55db4bac281a8ca8940915fd5`，ELF/init 检查无依赖或服务入口失败。本版另已在 OS4.0.4.0 真机 A 槽完成 KSU 安装、冷启动、凭据解密和 CE 文件读写往返验证，返回 Android 后 GPT 与其余启动分区核验通过。具体范围见仓库根 README。
 
-返回模块仓库根目录，将重建镜像和原厂镜像交给 `tools/build_module.py` 打包。只有镜像与已验证发布版本的完整哈希一致，才会生成该版模块；有意修改源码后，需要重新进行版本核验并更新 `config/images.json`。
+返回模块仓库根目录，将重建镜像和原厂镜像交给 `tools/build_module.py` 打包。只有镜像与本版固定的完整哈希一致，才会生成该版模块；有意修改源码后，需要重新进行版本核验并更新 `config/images.json`。
 
 ## 改动与验收边界
 
@@ -60,4 +60,6 @@ python3 tools/recovery/build_prebuilt_crypto.py
 - `patch_prebuilt_hardware.py`、`recovery/prebuilt/`：本机亮度/温度参数、原厂振动驱动和 HAL、闪光灯串行控制、RTC 时间修正。
 - `stage_prebuilt_crypto.py`：MiTEE/KeyMint、VINTF、linker namespace、原厂 OS/SPL 参数和本机 OTA 身份信息。
 
-镜像构建与宿主检查不会将真机验收字段自动标成通过。本版设备结果在仓库根目录说明及 `config/images.json` 中单独记录；格式化新的加密 userdata、完整备份恢复、OTA 和外置存储仍不属于已通过范围。
+本版原厂 system 为 Android 17 / SPL `2026-10-01`，vendor 为 SPL `2026-09-01`；原始内部构建号分别为 `17OS4.0.261106.161950561.XRPECN.S` 与 `OS4.0.3.1.XODCN`。参数入口分别核对两侧版本，不能将 vendor SPL 也改成十月。原厂 Recovery 的 AVB rollback index 仍为 `1788220800`，构建从新原件读取此值与 fingerprint。
+
+镜像构建与宿主检查不会将真机验收字段自动标成通过。本版的真机结果在仓库根目录说明及 `config/images.json` 中单独记录；双槽完整卸载回退尚未重新实测，格式化新的加密 userdata、完整备份恢复、OTA 和外置存储仍不属于已通过范围。

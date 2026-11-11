@@ -53,8 +53,8 @@
       "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_vip_sched.ko",
       "original_relative_path": "extra/xring-modules/drivers/cpu_sched/xiaomi_sched/os_cpu_vip_sched.ko",
       "source_kind": "vendor_boot",
-      "bytes": 99504,
-      "sha256": "a9fa67df5b83831b2682d85e9e16e4e77b4bea76cd02612f889475980b4aaa23"
+      "bytes": 100008,
+      "sha256": "ba2cffca197f7d807411d3e0bddebd7aec78c2e7cbb4615b55afce5fedf3211f"
     },
     {
       "file": "xr_timestamp.ko",
@@ -125,8 +125,8 @@
       "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/ddr/xr_ddr.ko",
       "original_relative_path": "extra/xring-modules/drivers/ddr/xr_ddr.ko",
       "source_kind": "vendor_boot",
-      "bytes": 82760,
-      "sha256": "ef7fdc1d3237d7cf3b4ae65c9497bb7708b1723cc147ea11b86bfe5d76ca3db1"
+      "bytes": 65544,
+      "sha256": "8c462e70ee3614486c36b7c85a3a3be843c5bb8c3412b6591078d9acf26894cc"
     },
     {
       "file": "media-dvfs.ko",
@@ -222,7 +222,7 @@
       "original_relative_path": "kernel/drivers/gpu/drm/display/drm_display_helper.ko",
       "source_kind": "vendor_boot",
       "bytes": 319200,
-      "sha256": "1e01d73d8ea159a26a2441d5321b30999b265a7a4e67679b66f7ddacaafe3115"
+      "sha256": "d5ed6529338913ad4de1fae970540a068b010874d75b6c6b5c0189d8f78e24fd"
     },
     {
       "file": "xring_smmu.ko",
@@ -230,7 +230,7 @@
       "original_relative_path": "extra/xring-modules/drivers/xr_mem/smmu/xring_smmu.ko",
       "source_kind": "vendor_boot",
       "bytes": 196960,
-      "sha256": "a4160f70be8705dee0d6d23bae2a297686dbc2e42dc679e6ba20d49dbf88cdc4"
+      "sha256": "f343277882efb80b9e2f91eceac2cea9db75cec2f69fbe6d9bc939b9d6c262f4"
     },
     {
       "file": "miev.ko",
@@ -253,16 +253,16 @@
       "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/tee/mitee.ko",
       "original_relative_path": "extra/xring-modules/drivers/tee/mitee.ko",
       "source_kind": "vendor_boot",
-      "bytes": 279352,
-      "sha256": "5a4e4d12e3c0e95a8c35166bafc65c8f4cf44df2ec53454e137abfc59bdb3a16"
+      "bytes": 288432,
+      "sha256": "63f11376b8a6bbebd19a08f6b9b1f34ac3f4ed9a4a98546cee5ea7e039b4faf5"
     },
     {
       "file": "xr_mem_s1.ko",
       "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/xr_mem/xr_mem_s1.ko",
       "original_relative_path": "extra/xring-modules/drivers/xr_mem/xr_mem_s1.ko",
       "source_kind": "vendor_boot",
-      "bytes": 575856,
-      "sha256": "19e213cb48af3cbc1658b2a59d08fb2ab3d46a7d437ffadee356bc94111c33c2"
+      "bytes": 580240,
+      "sha256": "bda9ce61e89510bea32bf9494efde9300f797ad2a1373b78f81fe5a481e31889"
     },
     {
       "file": "redriver.ko",
@@ -301,20 +301,20 @@
       "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/pmic/xr_pmic.ko",
       "original_relative_path": "extra/xring-modules/drivers/pmic/xr_pmic.ko",
       "source_kind": "vendor_boot",
-      "bytes": 129576,
-      "sha256": "3aaeea85387f9cd5e92bebfa569dde0745d236facf00239b97996453d395aba3"
+      "bytes": 129552,
+      "sha256": "bbb8d9eaa4746899327b18b9ac3de392979c14dcab43df157782d6c7cc669deb"
     },
     {
       "file": "xring-drm.ko",
       "source": "build/recovery/stock/vendor_boot_b/ramdisk-00/root/lib/modules/6.18.21-android17-5-maybe-dirty-4k/extra/xring-modules/drivers/display/dpu/xring-drm.ko",
       "original_relative_path": "extra/xring-modules/drivers/display/dpu/xring-drm.ko",
       "source_kind": "vendor_boot",
-      "bytes": 6045144,
-      "sha256": "b906842c30c5242ea6147c6244a5e7675785e75ff0cde0178b19232c2cc8f790"
+      "bytes": 6044688,
+      "sha256": "7a0014feaf4868edcfef31dec9c6f68bce21ccb616179ed5a2812c204b2b1913"
     },
     {
       "file": "shub_boot_prepare.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_boot_prepare.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/shub_boot_prepare.ko",
       "original_relative_path": "/vendor/lib/modules/shub_boot_prepare.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 85072,
@@ -330,7 +330,7 @@
     },
     {
       "file": "shub_ipc_drv.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_ipc_drv.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/shub_ipc_drv.ko",
       "original_relative_path": "/vendor/lib/modules/shub_ipc_drv.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 33800,
@@ -338,7 +338,7 @@
     },
     {
       "file": "xiaomi_touch_dijun.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xiaomi_touch_dijun.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xiaomi_touch_dijun.ko",
       "original_relative_path": "/vendor/lib/modules/xiaomi_touch_dijun.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 233176,
@@ -346,7 +346,7 @@
     },
     {
       "file": "xr_spi_mmio.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xr_spi_mmio.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xr_spi_mmio.ko",
       "original_relative_path": "/vendor/lib/modules/xr_spi_mmio.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 78680,
@@ -354,7 +354,7 @@
     },
     {
       "file": "tui.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/tui.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/tui.ko",
       "original_relative_path": "/vendor/lib/modules/tui.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 63640,
@@ -362,15 +362,15 @@
     },
     {
       "file": "synaptics_tcm2.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/synaptics_tcm2.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/synaptics_tcm2.ko",
       "original_relative_path": "/vendor/lib/modules/synaptics_tcm2.ko",
       "source_kind": "vendor_dlkm",
-      "bytes": 595992,
-      "sha256": "dc2b7631bdac52d6c2152abb465aab7842e232da1bbf20958113b6c26d94b7bf"
+      "bytes": 599184,
+      "sha256": "8fecca0cfad0cdef274356a28dc3f06ee9f8025ba244d313ee9bf8d1f58ffc3f"
     },
     {
       "file": "xring_audio_hw_third.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xring_audio_hw_third.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xring_audio_hw_third.ko",
       "original_relative_path": "/vendor/lib/modules/xring_audio_hw_third.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 5544832,
@@ -378,7 +378,7 @@
     },
     {
       "file": "shub_app_router.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/shub_app_router.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/shub_app_router.ko",
       "original_relative_path": "/vendor/lib/modules/shub_app_router.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 83512,
@@ -402,7 +402,7 @@
     },
     {
       "file": "xr_isp.ko",
-      "source": "inputs/recovery/os4-0-0-19/vendor-dlkm-modules/xr_isp.ko",
+      "source": "inputs/recovery/os4-0-4-0/vendor-dlkm-modules/xr_isp.ko",
       "original_relative_path": "/vendor/lib/modules/xr_isp.ko",
       "source_kind": "vendor_dlkm",
       "bytes": 1085000,

@@ -63,7 +63,7 @@ def main():
     struct.pack_into("<I", header, 40, 4)
     image = ROOT / "build/recovery/OrangeFox-dijun-crypto-trial-zh.img"
     image.write_bytes(header + compressed + bytes(-len(compressed) % 4096))
-    stock = ROOT / "inputs/recovery/os4-0-0-19/recovery_b.img"
+    stock = ROOT / "inputs/recovery/os4-0-4-0/recovery.img"
     original = avb_info(stock.read_bytes())
     fingerprint = next(x["value"] for x in original["descriptors"] if x.get("key") == "com.android.build.recovery.fingerprint")
     subprocess.run([sys.executable, str(ROOT / "sources/orangefox/component-tools/avbtool.py"), "add_hash_footer",

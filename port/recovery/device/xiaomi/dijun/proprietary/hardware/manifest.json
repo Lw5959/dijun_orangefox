@@ -1,5 +1,5 @@
 {
-  "firmware": "OS4.0.0.19.XODCNXM",
+  "firmware": "OS4.0.4.0.XODCNXM",
   "files": [
     {
       "source": "/odm/bin/hw/vendor.xring.hardware.vibratorfeature.service",
