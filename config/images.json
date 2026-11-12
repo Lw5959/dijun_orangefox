@@ -1,7 +1,7 @@
 {
   "firmware": "OS4.0.4.0.XODCNXM",
   "image_bytes": 104857600,
-  "orangefox_sha256": "4f3caf55bc27d7311c58fa1361c54e8056335bb55db4bac281a8ca8940915fd5",
+  "orangefox_sha256": "1802648d266119999979b91ae18b71d2a0566597eaf2cb190233a2f9d8e0cb9c",
   "stock_sha256": "6b09247cea7869b66b383009a28b77160c42afb0be90d6c143eca2d7c253b629",
   "validation": {
     "cold_boot": true,
@@ -11,10 +11,30 @@
     "brightness": true,
     "existing_userdata_decryption": true,
     "ksu_upgrade": true,
-    "ota_slot_migration_hardware_tested": false,
+    "ota_slot_migration_hardware_tested": true,
     "a_slot_hardware_tested": true,
     "full_backup_restore_ota_tested": false,
     "ce_read_write_roundtrip": true,
-    "ota_slot_install_and_backup_preserved": true
+    "ota_slot_install_and_backup_preserved": true,
+    "uninstall_two_slot_restore_tested": true,
+    "cli_sequential_and_ui_restart_tested": true,
+    "restore_digest_rejection_tested": true,
+    "boot_recovery_backup_restore_tested": true,
+    "mtp_transfer_tested": true,
+    "sideload_cancel_and_return_tested": true,
+    "sideload_recovery_write_and_exit_tested": true,
+    "fastbootd_readonly_roundtrip_tested": true,
+    "full_userdata_restore_tested": false,
+    "rom_flashing_tested": false,
+    "ota_flashing_tested": false,
+    "otg_tested": false
+  },
+  "validation_notes": {
+    "final_image": "KSU 安装/激活、fastbootd 刚连上即返回 Recovery、冷启动凭据解密、CE 读写及 Android 读回/删除、KSU 模块页、普通命令与最终 GPT/受保护分区核对。",
+    "sideload_tested_image_sha256": "33735267c7243e6542d577722ed796dafed4d332014c21fdf15566c9e9d17460",
+    "sideload_scope": "取消/返回及只写回相同 Recovery 的 ZIP 完整退出在上述镜像上实测；最终镜像仅进一步后移 fastbootd 的 USB 开放时点，保留相同 sideload 实现。",
+    "other_component_tests": "双槽卸载、Boot/Recovery 备份恢复、恢复摘要、MTP 文件传输及振动定时测试沿用本轮相同实现的独立真机记录，详见固件文档。",
+    "not_tested": "完整 userdata 恢复、ROM/OTA 刷写、OTG。",
+    "touch_report": "曾有一次触摸无响应反馈，随后两轮用户确认正常；最终候选已完成真实凭据输入和解密，未将该反馈表述为已定位的触摸驱动修复。"
   }
 }

@@ -47,7 +47,7 @@ def build_drm(ndk):
                               'spr_enabled = 0; // O1 不使用 SDE SPR。')
     target.write_text(content)
     exports = BUILD / "drm.exports"
-    exports.write_text("{ global: _Z8open_drmv; local: *; };\n")
+    exports.write_text("{ global: _Z8open_drmv; _Z7vibratei; local: *; };\n")
     headers = ROOT / "sources/orangefox/component-headers/libdrm"
     host = {"Darwin": "darwin-x86_64", "Linux": "linux-x86_64"}[platform.system()]
     toolchain = ndk / "toolchains/llvm/prebuilt" / host
@@ -60,8 +60,14 @@ def build_drm(ndk):
                "-I", SOURCE / "minuitwrp/include", "-I", SOURCE / "minuitwrp",
                "-I", SOURCE / "gui/include", "-I", SOURCE / "libpixelflinger/include",
                # donor 已把 libdrm 静态并入 minuitwrp，使用它导出的真实 DRM 接口。
-               target, "-L", DONOR / "root/system/lib64", "-lminuitwrp", "-o", library]
+               target, DEVICE / "haptics.cpp", "-L", DONOR / "root/system/lib64",
+               "-lminuitwrp", "-lbinder_ndk", "-o", library]
     run(command)
+    # 退出清理走独立进程，不能依赖已经退出的 GUI 定时线程。
+    run([toolchain / "bin/aarch64-linux-android34-clang", "-fPIE", "-pie", "-O2",
+         "-Wl,-z,defs", DEVICE / "haptics_off.c", "-L", BUILD, "-ldijun_drm",
+         "-Wl,-rpath-link," + str(DONOR / "root/system/lib64"),
+         "-o", BUILD / "dijun-haptics-off"])
     return library, [str(x) for x in command]
 
 
@@ -113,7 +119,47 @@ def configure_ui(read, add):
             xml = xml.replace(marker, marker + hook, 1)
         add(name, xml)
     chinese = "twres/languages/zh_CN.xml"
-    add(chinese, re.sub(rb"<display>.*?</display>", "<display>简体中文</display>".encode(), read(chinese), count=1))
+    translation = re.sub(rb"<display>.*?</display>", "<display>简体中文</display>".encode(), read(chinese), count=1)
+    # donor 将 backup_folder 误译成 /Data 文件系统警告；这里实际展示的是保存路径。
+    translation = re.sub(rb'<string name="backup_folder">.*?</string>',
+                         '<string name="backup_folder">备份文件夹：{1}</string>'.encode(),
+                         translation, count=1)
+    if b'<string name="restore">' not in translation:
+        translation = translation.replace(b"</resources>", '<string name="restore">恢复</string>\n</resources>'.encode(), 1)
+    add(chinese, translation)
+    modules_page = "twres/pages/rmmanager.xml"
+    modules = read(modules_page)
+    marker = b"<!-- dijun: distinguish pending/success/failure before starting the query -->"
+    if marker not in modules:
+        # 成功分支把 found 改回 -1，会让同一轮通知继续触发后面的失败分支。
+        # 每次进入先置为“待查询”；只把明确的 0 当作失败，成功值保留到离页。
+        modules = modules.replace(b'<page name="modules_mount">',
+                                  b'<page name="modules_mount">\n' + marker +
+                                  b'\n<action><action function="set">rmm_found=-1</action></action>', 1)
+        modules = modules.replace(b'<action function="set">rmm_found=-1</action>\n\t\t\t\t<action function="page">root_modules</action>',
+                                  b'<action function="page">root_modules</action>', 1)
+        modules = modules.replace(b'<condition var1="rmm_found" op="!=" var2="1"/>',
+                                  b'<condition var1="rmm_found" var2="0"/>')
+    add(modules_page, modules)
+
+
+def configure_usb_handshake(data):
+    """由本机 USB rc 完整清理后再确认 none，不能让等待方提前开始下一次绑定。"""
+    blocks = re.split(rb"(?=^(?:on|service|import)\b)", data, flags=re.M)
+    result = []
+    for block in blocks:
+        match = re.match(rb"on property:sys\.usb\.config=([a-z,]+)\b", block)
+        if match:
+            mode = match[1]
+            if mode == b"none":
+                # 通用 rc 在这里只清 f1 就发布 state；本机还需清 f2 和 MTP ready。
+                # 删除这两个通用入口，none 的确认统一放到本机 rc 的最后一条。
+                continue
+            # init action 排队期间 config 可能已变化；确认的是本动作绑定的模式。
+            block = block.replace(b"setprop sys.usb.state ${sys.usb.config}",
+                                  b"setprop sys.usb.state " + mode)
+        result.append(block)
+    return b"".join(result)
 
 
 def display_module_closure(directory):
@@ -163,6 +209,7 @@ def assemble(library):
         add(name, source.read_bytes(), mode)
 
     file("system/lib64/libdijun_drm.so", library, 0o755)
+    file("system/bin/dijun-haptics-off", BUILD / "dijun-haptics-off", 0o755)
     # 原厂 AIDL boot HAL 使用 Android 15 libc++ 的 verbose_abort；沿用同一原厂运行库。
     file("system/lib64/libc++.so", ROOT / "build/recovery/stock/recovery_b/ramdisk-00/root/system/lib64/libc++.so", 0o755)
     # donor 的附加 ps 来自旧 Android，使用现有 toybox 的同名命令。
@@ -198,6 +245,7 @@ def assemble(library):
     add("system/etc/ld.config.txt", config.encode())
     init = "system/etc/init/hw/init.rc"
     payloads[init] = payloads[init].replace(b"import /init.recovery.mksh.rc\n", b"")
+    payloads[init] = configure_usb_handshake(payloads[init])
     configure_ui(payloads.__getitem__, add)
     add("init.recovery.service.rc", b"service recovery /system/bin/sh /system/bin/start-dijun-recovery\n    socket recovery stream 422 system system\n    seclabel u:r:recovery:s0\n")
     # 固定为此备份对应系统的真实版本；SDK 保留 donor ABI 34，不谎报其用户空间 ABI。

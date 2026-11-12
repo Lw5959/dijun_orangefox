@@ -9,9 +9,10 @@ import stat
 from pathlib import Path
 
 from audit_runtime import RamdiskFiles, audit_runtime
-from build_prebuilt_trial import configure_ui
+from build_prebuilt_trial import configure_ui, configure_usb_handshake
 from preserve_prebuilt_keys import preserve_existing_keys, preserve_mount_failures
 from patch_prebuilt_hardware import patch_hardware
+from patch_prebuilt_session import patch_mtp, patch_session
 
 ROOT = Path(__file__).resolve().parents[2]
 DEVICE = ROOT / "recovery/device/xiaomi/dijun"
@@ -48,9 +49,14 @@ def main():
     add("sepolicy", policy)
     recovery, key_policy = preserve_existing_keys((root / "system/bin/recovery").read_bytes())
     recovery, hardware_policy = patch_hardware(recovery)
+    recovery, session_policy = patch_session(recovery)
     add("system/bin/recovery", recovery, 0o755)
     (STAGE / "key-policy.json").write_text(json.dumps(key_policy, ensure_ascii=False, indent=2) + "\n")
     (STAGE / "hardware-policy.json").write_text(json.dumps(hardware_policy, ensure_ascii=False, indent=2) + "\n")
+    (STAGE / "session-policy.json").write_text(json.dumps(session_policy, ensure_ascii=False, indent=2) + "\n")
+    mtp, mtp_policy = patch_mtp((root / "system/lib64/libtwrpmtp-ffs.so").read_bytes())
+    add("system/lib64/libtwrpmtp-ffs.so", mtp, 0o755)
+    (STAGE / "mtp-session-policy.json").write_text(json.dumps(mtp_policy, ensure_ascii=False, indent=2) + "\n")
     fs_mgr, mount_policy = preserve_mount_failures((root / "system/lib64/libfs_mgr.so").read_bytes())
     add("system/lib64/libfs_mgr.so", fs_mgr, 0o755)
     (STAGE / "mount-policy.json").write_text(json.dumps(mount_policy, ensure_ascii=False, indent=2) + "\n")
@@ -131,7 +137,7 @@ def main():
     # 各进程按其 linker profile 解析库；移除 donor 的全局路径，避免 vendor 先取平台同名库。
     init = "system/etc/init/hw/init.rc"
     lines = (root / init).read_text().splitlines(keepends=True)
-    add(init, "".join(line for line in lines if not line.strip().startswith("export LD_LIBRARY_PATH ")).encode())
+    add(init, configure_usb_handshake("".join(line for line in lines if not line.strip().startswith("export LD_LIBRARY_PATH ")).encode()))
     canonical = (DEVICE / "recovery/root/system/etc/ld.config.txt").read_text()
     canonical = canonical.replace("dir.recovery = /system/bin", "dir.recovery = /system\ndir.tools = /sbin\ndir.addons = /FFiles")
     # /sbin 与 /FFiles 的工具使用同一平台 profile；厂商服务始终保留独立 vendor profile。

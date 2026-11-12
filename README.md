@@ -4,6 +4,8 @@
 
 当前版本适配 `OS4.0.4.0.XODCNXM`，已在真机 A 槽完成 KSU 安装、Android 重启、Recovery 冷启动、真实凭据解密及文件读写往返验证。用户确认常用界面与硬件功能正常。
 
+支持中文界面、既有 userdata 解密、文件管理、备份恢复、USB MTP、ADB sideload 与 fastbootd。保留用户保存的触摸、键盘和操作完成震动设置。命令行恢复默认校验备份摘要，显式 `M` 参数才跳过。
+
 - 模块 ID：`dijun_orangefox`
 - 作者：`OrangeFox Team & Lw59`
 - [下载最新模块](https://github.com/Lw5959/dijun_orangefox/releases/latest)
@@ -45,19 +47,23 @@ fastboot -s <手机序列号> reboot
 
 ## 已验证的范围
 
-本版通过 21 项模块宿主测试、3 项参数与 linker 测试、17 项 AArch64 密钥策略分支检查。新版 51 个模块的 4514 项符号导入与 OTA 中真实内核及配套模块的 CRC 和加载顺序一致，ELF/init 依赖检查通过。
+本版通过 21 项模块宿主测试、6 项参数、linker 与 USB 时序测试、17 项 AArch64 密钥策略分支检查及 52 项会话、恢复、sideload 与 fastbootd 生命周期分支检查。新版 51 个模块的 4514 项符号导入与 OTA 中真实内核及配套模块的 CRC 和加载顺序一致，ELF/init 依赖检查通过。
 
 本轮真机已完成 OTA 换槽后的 KSU 安装及 B 槽回退材料保留、Android 重启、模块操作入口冷启动、真实凭据解密、自建 CE 文件在 Android → Recovery → Android 的读写与删除。中文、显示/触控、显示与振动页面、手电筒、振动和亮度获得用户确认；亮度界面值与实际节点读数一致。
 
 返回 Android 后，4 个磁盘的 28 份 GPT 原始元数据文件逐字节一致，38 个启动相关分区仅 `recovery_a` 发生预期变化；`recovery_b`、原 A 槽及 BL 解锁状态保持。公开验收状态见 [`config/images.json`](config/images.json)。完整镜像 SHA256 为：
 
 ```text
-4f3caf55bc27d7311c58fa1361c54e8056335bb55db4bac281a8ca8940915fd5
+1802648d266119999979b91ae18b71d2a0566597eaf2cb190233a2f9d8e0cb9c
 ```
 
 旧固件 `OS4.0.0.19` 的历史版本曾在 B 槽完成冷启动、解密、文件读写、中文、触控、手电筒、振动、亮度及安装/卸载回退。这些历史结果不作为新版通过记录。
 
-本版尚未重新实测卸载时的双槽完整回退。完整备份/恢复、刷 ROM/OTA、fastbootd、OTG 和 MTP 文件传输也尚未完成验收；本版保留现有 FBE 密钥，不支持初始化新的加密 userdata。
+本轮已实测卸载及双槽原厂 Recovery 回退，A 槽恢复 OS4.0.4.0、B 槽恢复其原有 OS4.0.0.19。卸载 Recovery 模块不会升级或回退 Android 系统，也不会同步两个槽的固件。另已实测 Boot/Recovery 的备份和恢复、MTP 文件发送/读回/删除，以及连续 100 条命令和已解密会话的界面重启。
+
+`.4` 已通过真实菜单的 sideload 开始、取消、返回，以及受控 Recovery ZIP 的一次写入、完整读回和正常退出；MTP/ADB 均恢复，KSU 模块页可再次进入。最终镜像将 fastbootd 的 USB 开放移到原有启动请求清理之后，电脑在设备首次出现 0.077 秒后立即发送返回命令，也能正常回到 Recovery、解密并访问 CE 文件。各项测试对应的镜像与组件范围在固件文档中分别记录。
+
+完整 userdata 备份恢复、刷 ROM/OTA 和 OTG 尚未完成验收。完整 OTA 会更新非当前槽及 UEFI 等固件，与本轮保留原槽和 UEFI 的约束不兼容，不能以模块安装或升级材料保留代替刷 ROM/OTA 实测。本版保留现有 FBE 密钥，不支持初始化新的加密 userdata。
 
 ## 从源码打包模块
 

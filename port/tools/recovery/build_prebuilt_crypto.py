@@ -27,12 +27,25 @@ def main():
     root = STAGE / "root"
     checks = json.loads((STAGE / "key-policy-checks.json").read_text())
     hardware = json.loads((STAGE / "hardware-policy.json").read_text())
+    session = json.loads((STAGE / "session-policy.json").read_text())
+    session_checks = json.loads((STAGE / "session-checks.json").read_text())
     assert checks["passed"]
     assert checks["patched_sha256"] == hardware["source_sha256"]
     final_recovery = (root / "system/bin/recovery").read_bytes()
-    assert hardware["patched_sha256"] == sha(final_recovery)
+    assert session_checks["passed"] and session_checks["patched_sha256"] == session["patched_sha256"]
+    assert session["source_sha256"] == hardware["patched_sha256"]
+    assert session["patched_sha256"] == sha(final_recovery)
+    mtp = json.loads((STAGE / "mtp-session-policy.json").read_text())
+    assert session_checks["patched_mtp_sha256"] == mtp["patched_sha256"]
+    assert mtp["patched_sha256"] == sha((root / "system/lib64/libtwrpmtp-ffs.so").read_bytes())
     # 还原硬件修正后必须逐字节回到已完成密钥策略检查的 ELF，不能只沿用旧报告。
     restored = bytearray(final_recovery)
+    for patch in reversed(session["patches"]):
+        offset = int(patch["offset"], 16)
+        before, after = bytes.fromhex(patch["before"]), bytes.fromhex(patch["after"])
+        assert restored[offset:offset + len(after)] == after
+        restored[offset:offset + len(after)] = before
+    assert sha(restored) == hardware["patched_sha256"]
     for patch in hardware["patches"]:
         offset = int(patch["offset"], 16)
         before, after = bytes.fromhex(patch["before"]), bytes.fromhex(patch["after"])

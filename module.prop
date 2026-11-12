@@ -1,6 +1,6 @@
 id=dijun_orangefox
 name=OrangeFox for Dijun
-version=R12.0_2-dijun-20261111.3-os4.0.4.0
-versionCode=20261114
+version=R12.0_2-dijun-20261111.4-os4.0.4.0
+versionCode=20261115
 author=OrangeFox Team & Lw59
-description=仅适配 dijun OS4.0.4.0.XODCNXM；冷启动与解密已验证；操作进入 Recovery；卸载按各槽记录恢复原厂。
+description=适配 dijun OS4.0.4.0.XODCNXM；操作进入 OrangeFox Recovery；支持数据解密、备份恢复和文件管理；卸载恢复原厂 Recovery。

@@ -18,4 +18,9 @@ on property:twrp.modules.loaded=true && property:twrp.crypto.boot_params.ready=t
     start dijun-hardware
 
 on property:sys.powerctl=*
+    exec u:r:recovery:s0 root root -- /system/bin/dijun-haptics-off
     exec -- /system/bin/sh /system/bin/dijun-torch off
+
+# fastbootd、进程重启等路径也可能在震动结束前退出 GUI。
+on property:init.svc.recovery=stopped
+    exec u:r:recovery:s0 root root -- /system/bin/dijun-haptics-off

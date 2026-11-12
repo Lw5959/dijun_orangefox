@@ -11,6 +11,7 @@ while IFS= read -r module; do
 done </vendor/lib/modules/1.1/modules.load
 setprop twrp.modules.loaded true
 echo 4096 >/sys/class/backlight/panel0-backlight/brightness
-# open_drm 在原库中通过 PLT 调用；只替换显示后端，保留原 OrangeFox GUI/输入代码。
+# open_drm 和 vibrate 均经 PLT：替换 O1 显示后端，并确保每次震动按时停止。
+# 保留原 GUI/输入与用户反馈设置，不通过禁用震动掩盖原厂 HAL 的定时问题。
 export LD_PRELOAD=/system/lib64/libdijun_drm.so
 exec /system/bin/recovery

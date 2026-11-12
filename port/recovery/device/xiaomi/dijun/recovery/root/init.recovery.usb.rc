@@ -20,18 +20,21 @@ on property:sys.usb.config=mtp,adb && property:sys.usb.configfs=1 && property:sy
     symlink /config/usb_gadget/g1/functions/ffs.mtp /config/usb_gadget/g1/configs/b.1/f1
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f2
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
-    setprop sys.usb.state ${sys.usb.config}
+    setprop sys.usb.state mtp,adb
 
-# 上游 none/configfs=1 只清 f1；startupArgs 的 fastboot 路径还会临时置
-# configfs=0。这里不加 configfs 条件，确保该窗口也先解绑、清理两个链接、
-# 复位两个 ready，避免随后 ADB/fastboot/sideload 绑定到旧 MTP 组合。
-# 重复清理不存在的链接是 init 的非致命操作，不增加新的 adbd service。
+# 构建时移除通用 rc 的两个 none 入口，由此处完整接管清理与确认。
+# 必须在清理两个链接及 ready 后才发布 state=none；否则等待方会提前
+# 启动下一轮 adbd/minadbd，而迟到的清理又把新描述符的 ready 清成 0。
+# startupArgs 会临时置 configfs=0，所以此处不增加 configfs 条件。
 on property:sys.usb.config=none
     write /config/usb_gadget/g1/UDC "none"
+    stop adbd
+    stop fastbootd
     rm /config/usb_gadget/g1/configs/b.1/f1
     rm /config/usb_gadget/g1/configs/b.1/f2
     setprop sys.usb.ffs.ready 0
     setprop sys.usb.ffs.mtp.ready 0
+    setprop sys.usb.state none
 
 # Recovery 退出会关闭 MTP 的 FFS 端点；旧组合仍绑定会使 ADB 一起消失。
 # 仅在该组合中退回独立 ADB，避免覆盖 fastbootd/sideload 已选择的 USB 模式。
